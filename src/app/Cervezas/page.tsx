@@ -1,7 +1,7 @@
 
 import { fetchCervezas} from "@/services/api"
 import { Cerveza } from "@/interfaces/interfaces"
-
+import Formulario from "@/components/Formulario";
 
 
 const page = async() => {
@@ -17,7 +17,10 @@ const page = async() => {
       <h1 className="text-2xl font-bold text-center">
         Cervezas
       </h1>
+      
       <div className="w-11/12 mx-auto border-2 p-4 rounded-lg">
+      <Formulario/>
+      <h1 className="text-2xl font-bold text-center">Lista</h1>
       <table className="w-full" >
         <thead>
         <th >
