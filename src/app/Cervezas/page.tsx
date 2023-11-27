@@ -3,11 +3,17 @@ import { fetchCervezas} from "@/services/api"
 import { Cerveza } from "@/interfaces/interfaces"
 
 
+
 const page = async() => {
   const c:Cerveza[]=await fetchCervezas();
-  console.log(c)
+  
+
+  
+  
+  
   return (
     <div>
+      
       <h1 className="text-2xl font-bold text-center">
         Cervezas
       </h1>

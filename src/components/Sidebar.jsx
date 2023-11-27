@@ -110,7 +110,7 @@ export default function Sidebar() {
           {menu.map((item)=>(
             <li key={item.id}>
               <Link href={item.path}>
-              <h1 className="ml-6 mt-3 font-semibold px-4 py-1 rounded-full hover:bg-gray-800 hover:text-white">{item.name}</h1>
+              <h1 className="ml-6 mt-3 font-semibold px-4 py-1 rounded-lg hover:bg-gray-800 hover:text-white">{item.name}</h1>
             </Link>
             </li>
           ))} 
