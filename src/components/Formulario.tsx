@@ -49,14 +49,14 @@ const Formulario: React.FC<Props> = ({ data }) => {
       ...prevFormData,
       [name]: value,
     }));
-    console.log(formData);
+
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Aquí puedes construir el query string con los valores de formData
     const queryString = `tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&graduacion_id=${formData.graduacion}`;
-    //console.log(queryString)
+
  //   alert(queryString)
     setLocalData(await fetchCervezasQuery(queryString));
    
