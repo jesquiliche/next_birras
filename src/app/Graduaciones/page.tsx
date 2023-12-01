@@ -5,7 +5,7 @@ import { Graduacion } from "@/interfaces/interfaces"
 
 const page = async() => {
   const c:Graduacion[]=await fetchGraduaciones();
-  console.log(c)
+  
   return (
     <div>
       <h1 className="text-2xl font-bold text-center">
