@@ -19,6 +19,7 @@ import {
 } from "@/interfaces/interfaces";
 import CervezasTable from "@/components/CervezasTable";
 import Load from "@/components/Load";
+import Link from "next/link";
 
 const Page = () => {
   const [loading, setLoading] = useState(false);
@@ -40,7 +41,6 @@ const Page = () => {
       ...prevFormData,
       [name]: value,
     }));
-    
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,7 +59,7 @@ const Page = () => {
     const obtenerCervezas = async () => {
       try {
         const cervezasData = await fetchCervezas();
-        
+
         setCervezas(cervezasData);
 
         const tiposData = await fetchTipos();
@@ -82,118 +82,128 @@ const Page = () => {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-  
-  }, [cervezas]);
+  useEffect(() => {}, [cervezas]);
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-center">Cervezas</h1>
-      <div className="w-11/12 mx-auto border-2 p-4 rounded-lg">
+      <div className="w-11/12 mx-auto border-2 p-4 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-center">Filtro</h1>
-         
-          <form onSubmit={handleSubmit} className="flex flex-wrap">
-            <div className="w-full md:w-1/4 p-2">
-              <label htmlFor="tipo" className="block text-gray-700">
-                Tipo:
-              </label>
-              <select
-                name="tipo"
-                id="tipo"
-                onChange={handleOnChange}
-                value={formData.tipo}
-                className="w-full p-2 border rounded bg-gray-100"
-              >
-                <option key="0" value="0"></option>
 
-                {tipos.map((t) => (
-                  <option
-                    key={t.id}
-                    value={t.id}
-                    selected={t.id ==+formData.tipo}
-                  >
-                    {t.nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
+        <form onSubmit={handleSubmit} className="flex flex-wrap">
+          <div className="w-full md:w-1/4 p-2">
+            <label htmlFor="tipo" className="block text-gray-700">
+              Tipo:
+            </label>
+            <select
+              name="tipo"
+              id="tipo"
+              onChange={handleOnChange}
+              value={formData.tipo}
+              className="w-full p-2 border rounded bg-gray-100"
+            >
+              <option key="0" value="0"></option>
 
-            <div className="w-full md:w-1/4 p-2">
-              <label htmlFor="pais" className="block text-gray-700">
-                País:
-              </label>
-              <select
-                name="pais"
-                id="pais"
-                onChange={handleOnChange}
-                className="w-full p-2 border bg-gray-100 rounded"
-              >
-                <option key="0" value="0"></option>
+              {tipos.map((t) => (
+                <option
+                  key={t.id}
+                  value={t.id}
+                  selected={t.id == +formData.tipo}
+                >
+                  {t.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
 
-                {paises.map((p) => (
-                  <option key={p.id} value={p.id}
-                  selected={p.id ==+formData.pais}
-                  >
-                    {p.nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="w-full md:w-1/4 p-2">
+            <label htmlFor="pais" className="block text-gray-700">
+              País:
+            </label>
+            <select
+              name="pais"
+              id="pais"
+              onChange={handleOnChange}
+              className="w-full p-2 border bg-gray-100 rounded"
+            >
+              <option key="0" value="0"></option>
 
-            <div className="w-full md:w-1/4 p-2">
-              <label htmlFor="color" className="block text-gray-700">
-                Color:
-              </label>
-              <select
-                name="color"
-                id="color"
-                onChange={handleOnChange}
-                className="w-full p-2 border bg-gray-100 rounded"
-              >
-                <option key="0" value="0"></option>
+              {paises.map((p) => (
+                <option
+                  key={p.id}
+                  value={p.id}
+                  selected={p.id == +formData.pais}
+                >
+                  {p.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
 
-                {colores.map((c) => (
-                  <option key={c.id} value={c.id}
-                  selected={c.id ==+formData.color}
-                                    >
-                    {c.nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="w-full md:w-1/4 p-2">
+            <label htmlFor="color" className="block text-gray-700">
+              Color:
+            </label>
+            <select
+              name="color"
+              id="color"
+              onChange={handleOnChange}
+              className="w-full p-2 border bg-gray-100 rounded"
+            >
+              <option key="0" value="0"></option>
 
-            <div className="w-full md:w-1/4 p-2">
-              <label htmlFor="graduacion" className="block text-gray-700">
-                Graduación:
-              </label>
-              <select
-                name="graduacion"
-                id="graduacion"
-                onChange={handleOnChange}
-                className="w-full p-2 border rounded bg-gray-100"
-              >
-                <option key="0" value="0"></option>
+              {colores.map((c) => (
+                <option
+                  key={c.id}
+                  value={c.id}
+                  selected={c.id == +formData.color}
+                >
+                  {c.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
 
-                {graduaciones.map((g) => (
-                  <option key={g.id} value={g.id}
-                  selected={g.id ==+formData.graduacion}
-                  >
-                    {g.nombre}
-                  </option>
-                ))}
-              </select>
-            </div>
+          <div className="w-full md:w-1/4 p-2">
+            <label htmlFor="graduacion" className="block text-gray-700">
+              Graduación:
+            </label>
+            <select
+              name="graduacion"
+              id="graduacion"
+              onChange={handleOnChange}
+              className="w-full p-2 border rounded bg-gray-100"
+            >
+              <option key="0" value="0"></option>
 
-            <div className="w-full p-2">
-              <button
-                type="submit"
-                className="bg-red-600 text-white px-4 py-1 rounded-lg"
-              >
-                Filtrar
-              </button>
-            </div>
-          </form>
-        
+              {graduaciones.map((g) => (
+                <option
+                  key={g.id}
+                  value={g.id}
+                  selected={g.id == +formData.graduacion}
+                >
+                  {g.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="w-full p-2">
+            <button
+              type="submit"
+              className="bg-red-600 text-white px-4 py-2 rounded-lg"
+            >
+              Filtrar
+            </button>
+            <Link
+              href="/Cervezas/add/"
+              className="ml-2 bg-red-600 text-white px-4 py-2 rounded-lg"
+            >
+              Añadir
+            </Link>
+          </div>
+        </form>
+
         <h1 className="text-2xl font-bold text-center">Lista</h1>
 
         {loading ? <Load /> : <CervezasTable cervezas={cervezas} />}
