@@ -1,14 +1,10 @@
 'use client'
-import React, { useState, useEffect } from 'react';
-import { Tipo, Pais, Color, Graduacion,Cerveza } from "@/interfaces/interfaces";
+import React, { useState, useEffect,ChangeEvent } from 'react';
+import { Tipo, Pais, Color, Graduacion } from "@/interfaces/interfaces";
 import { fetchTipos, fetchPaises, fetchColores, fetchGraduaciones } from "@/services/api";
-import { fetchCervezasQuery,fetchCervezas } from '@/services/api';
 
-interface Props {
-  data:Cerveza[]
-}
 const Formulario: React.FC = () => {
-  //const [localData, setLocalData] = useState(data);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [tipos, setTipos] = useState<Tipo[]>([]);
   const [paises, setPaises] = useState<Pais[]>([]);
   const [colores, setColores] = useState<Color[]>([]);
@@ -58,12 +54,21 @@ const Formulario: React.FC = () => {
     // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
   };
 
-
+  const handleImagenChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    
+    if (file) {
+      // Crear una URL de objeto para la vista previa de la imagen
+      const imageUrl = URL.createObjectURL(file);
+      setImagePreview(imageUrl);
+      }
+  };
+  
   return (
     <>
       <h1 className="text-2xl font-bold text-center">Añadir producto</h1>
       <div className="w-11/12 mx-auto border-2 rounded-lg shadow-lg py-2">
-      <form onSubmit={handleSubmit} className="grid grid-cols-2 w-11/12 mx-auto">
+      <form onSubmit={handleSubmit} className="grid grid-cols-3 w-11/12 mx-auto">
         <div className="w-full p-2">
           <label htmlFor="tipo" className="block text-gray-700">
             Tipo:
@@ -72,11 +77,10 @@ const Formulario: React.FC = () => {
             name="tipo"
             id="tipo"
             onChange={handleOnChange}
-            className="w-full p-2 border rounded bg-gray-100"
+            className="form-control"
+            required
           >
-            <option key="0" value="0">
-              
-            </option>
+            
 
             {tipos.map((t) => (
               <option key={t.id} value={t.id}>
@@ -94,11 +98,10 @@ const Formulario: React.FC = () => {
             name="pais"
             id="pais"
             onChange={handleOnChange}
-            className="w-full p-2 border bg-gray-100 rounded"
+            className="form-control"
+            required
           >
-              <option key="0" value="0">
               
-              </option>
   
             {paises.map((p) => (
               <option key={p.id} value={p.id}>
@@ -116,11 +119,10 @@ const Formulario: React.FC = () => {
             name="color"
             id="color"
             onChange={handleOnChange}
-            className="w-full p-2 border bg-gray-100 rounded"
+            className="form-control"
+            required
           >
-              <option key="0" value="0">
               
-              </option>
   
             {colores.map((c) => (
               <option key={c.id} value={c.id}>
@@ -138,11 +140,10 @@ const Formulario: React.FC = () => {
             name="graduacion"
             id="graduacion"
             onChange={handleOnChange}
-            className="w-full p-2 border rounded bg-gray-100"
+            className="form-control"
+            required
           >
-              <option key="0" value="0">
-              
-              </option>
+            
   
             {graduaciones.map((g) => (
               <option key={g.id} value={g.id}>
@@ -153,23 +154,64 @@ const Formulario: React.FC = () => {
         </div>
         <div className='p-2'>
             <label className="block w-full">Marca:</label>
-            <input type="text" className="w-full p-2 border rounded bg-gray-100">
+            <input type="text" className="form-control"
+            required
+            >
 
 
             </input>
         </div>
         <div className='p-2'>
             <label className="block w-full">Precio:</label>
-            <input type="number" className="w-full p-2 border rounded bg-gray-100">
+            <input type="number" className="form-control"
+            required>
 
 
             </input>
         </div>
+        
+        <div className='flex p-2 items-center'>
+           
+            <input type="checkbox" className="p-2 border rounded bg-gray-100"/>
+            <label className="ml-4 flex">Novedad</label>
+            <input type="checkbox" className="ml-4 p-2 border rounded bg-gray-100"/>
+            <label className="ml-4 flex">Oferta</label>
+        </div>
+        <div className='p-2 col-span-2'>
+            <label className="block w-full">Foto:</label>
+            <input type="file" 
+            className="form-control"
+            onChange={handleImagenChange}
+            required>
+            </input>
+            <img
+                className="rounded-lg h-80 mt-2"
+                id="image-preview"
+                src={imagePreview || ""}
+                alt="Vista previa de la imagen"
+                style={{
+                  display: imagePreview ? "block" : "none",
+                  maxWidth: "100%",
+                  margin: "0 auto",
+                }}
+              />
+        
+        </div>
+       
+        <div className='p-2 items-center col-span-3'>
+           
+          
+           <label className="ml-4 flex">Descripción:</label>
+          <textarea className="form-control row-span-4"
+          required
+          ></textarea>
+       </div>
+            
 
-        <div className="w-full p-2">
+        <div className="w-full p-2 col-span-3">
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+            className="bg-red-600 text-white px-4 py-2 rounded"
           >
             Enviar
           </button>

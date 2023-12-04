@@ -85,12 +85,13 @@ const Page = () => {
   useEffect(() => {}, [cervezas]);
 
   return (
+    <>
     <div>
       <h1 className="text-2xl font-bold text-center">Cervezas</h1>
       <div className="w-11/12 mx-auto border-2 p-4 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-center">Filtro</h1>
 
-        <form onSubmit={handleSubmit} className="flex flex-wrap">
+        {loading ? <Load/>:(<form onSubmit={handleSubmit} className="flex flex-wrap">
           <div className="w-full md:w-1/4 p-2">
             <label htmlFor="tipo" className="block text-gray-700">
               Tipo:
@@ -100,7 +101,7 @@ const Page = () => {
               id="tipo"
               onChange={handleOnChange}
               value={formData.tipo}
-              className="w-full p-2 border rounded bg-gray-100"
+              className="form-control"
             >
               <option key="0" value="0"></option>
 
@@ -124,7 +125,7 @@ const Page = () => {
               name="pais"
               id="pais"
               onChange={handleOnChange}
-              className="w-full p-2 border bg-gray-100 rounded"
+              className="form-control"
             >
               <option key="0" value="0"></option>
 
@@ -148,7 +149,7 @@ const Page = () => {
               name="color"
               id="color"
               onChange={handleOnChange}
-              className="w-full p-2 border bg-gray-100 rounded"
+              className="form-control"
             >
               <option key="0" value="0"></option>
 
@@ -172,7 +173,7 @@ const Page = () => {
               name="graduacion"
               id="graduacion"
               onChange={handleOnChange}
-              className="w-full p-2 border rounded bg-gray-100"
+              className="form-control"
             >
               <option key="0" value="0"></option>
 
@@ -202,13 +203,14 @@ const Page = () => {
               Añadir
             </Link>
           </div>
-        </form>
+        </form>)}
 
         <h1 className="text-2xl font-bold text-center">Lista</h1>
 
         {loading ? <Load /> : <CervezasTable cervezas={cervezas} />}
       </div>{" "}
     </div>
+    </>
   );
 };
 

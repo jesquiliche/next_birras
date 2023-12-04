@@ -124,7 +124,7 @@ export default function Sidebar() {
         }}>
           <Link href={item.path} className="flex items-center">
            {item.icon}
-            <h1 className="ml-2 mt-1 font-semibold px-4 py-1 rounded-lg hover:bg-gray-800 hover:text-white" style={{ lineHeight: '20px' }}>{item.name}</h1>
+            <h1 className="ml-2 font-semibold px-4 py-1 rounded-lg hover:bg-gray-800 hover:text-white" style={{ lineHeight: '20px' }}>{item.name}</h1>
           </Link>
         </li>
         
