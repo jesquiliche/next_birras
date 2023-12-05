@@ -1,6 +1,8 @@
 "use client";
-import { RiLoader2Fill } from "react-icons/ri";
+
 import React, { useState, useEffect } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Load from "@/components/Load";
 
 import {
   fetchCervezas,
@@ -18,7 +20,7 @@ import {
   Tipo,
 } from "@/interfaces/interfaces";
 import CervezasTable from "@/components/CervezasTable";
-import Load from "@/components/Load";
+
 import Link from "next/link";
 
 const Page = () => {
@@ -35,6 +37,7 @@ const Page = () => {
     graduacion: "",
   });
 
+ 
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
