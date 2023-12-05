@@ -37,7 +37,6 @@ export interface Cerveza {
     updated_at: any
   }
   
-
   export interface Graduacion {
     id: number
     nombre: string
