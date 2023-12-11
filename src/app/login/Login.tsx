@@ -36,7 +36,7 @@ const Login: React.FC = () => {
     });
 
     
-    console.log(responseNextAuth);
+   
 
     
     if (responseNextAuth?.status!=200) {

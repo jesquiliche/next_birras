@@ -1,8 +1,10 @@
 
+'use client'
 import ButtonAuth from  "@/components/ButtonAuth";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
- 
+  const { data: session, status } = useSession(); 
 
   return (
     <div className="px-2 mx-0 rounded-lg border-1 shadow-lg w-full mb-5 flex justify-between items-center">
@@ -14,7 +16,9 @@ const Navbar = () => {
           Registro
         </a>
         <ButtonAuth/>
+        
       </div>
+      
     </div>
   );
 };

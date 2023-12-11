@@ -8,12 +8,13 @@ const page = () => {
   if (status === "loading") {
     return <p>Loading...</p>;
   }
-  console.log(session);
+  
 
   return (
     <div>
        <pre>
         <code>{JSON.stringify(session, null, 2)}</code>
+   
       </pre>
       <ButtonAuth />
     </div>

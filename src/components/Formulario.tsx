@@ -60,7 +60,7 @@ const Formulario: React.FC<Props> = ({ data }) => {
  //   alert(queryString)
     setLocalData(await fetchCervezasQuery(queryString));
    
-    console.log(localData)
+    
     // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
   };
 
