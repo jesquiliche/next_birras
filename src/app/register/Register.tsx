@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { postRegister } from '@/services/api';
+import { useRouter } from 'next/navigation'; // Importa useRouter de Next.js
 
 interface UserData {
     name: string,
@@ -14,6 +15,8 @@ const Register: React.FC = () => {
     email: '',
   });
 
+  const router = useRouter(); // Obtiene el objeto router
+
   
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +24,7 @@ const Register: React.FC = () => {
     setUserData({ ...userData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
 
@@ -29,8 +32,13 @@ const Register: React.FC = () => {
     apiurl+='register'
     
     // Aquí puedes enviar los datos del formulario al servidor o realizar alguna acción con ellos
-    postRegister(apiurl,userData)
-    alert("Datos enviados correctamente")
+    const status=await postRegister(apiurl,userData)
+    console.log(status)
+    if(status=='ok'){
+      router.back();
+    } else {
+      alert(status);
+    }
     //console.log('Datos enviados:', userData);
     } catch (error) {
       alert(error) 

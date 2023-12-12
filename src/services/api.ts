@@ -66,7 +66,7 @@ export async function fetchPaises(): Promise<Pais[]> {
   }
 }
 
-export async function fetchColores(): Promise<Color[]> {
+export async function fetchColores(): Promise<Color[] | any> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
   try {
     const response = await fetch(`${apiUrl}colores`, {
@@ -83,7 +83,7 @@ export async function fetchColores(): Promise<Color[]> {
   } catch (error) {
     console.error("Error al obtener datos:", error);
 
-    return [];
+    
   }
 }
 
@@ -134,7 +134,7 @@ export async function postRegister(url:string,datos: {
   name: string;
   password: string;
   email: string;
-}) {
+}):Promise<string>{
   
   try {
     const response = await fetch(url, {
@@ -154,13 +154,20 @@ export async function postRegister(url:string,datos: {
         case 409:
           throw new Error('Ya existe un Usuario con este email: '+response.statusText);    
           break;
+          case 422:
+           // const data=await response.json();
+           // console.log(data)
+            throw new Error('Ya existe un Usuario con este email: ');
+
         default:
           throw new Error('Error al enviar los datos:'+response.statusText);
           break;
       }
       
     }
-  } catch (error) {
-    console.log(error);
+    return("ok");
+  } catch (error:any) {
+    return (error.message);
+   
   }
 };
