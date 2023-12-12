@@ -5,6 +5,6 @@ export const config = {
   "/Cervezas/:path*",
   "/Colores/:path*",
   "/Paises/:path*",
-  "/Graduaciones/:path*"
+  "/Graduaciones/:path*",
 ]
 };
