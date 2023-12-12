@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-//import { postRegister } from '@/services/api';
+import { postRegister } from '@/services/api';
 
 interface UserData {
     name: string,
@@ -23,11 +23,19 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    let apiurl=process.env.NEXT_PUBLIC_API_URL || "http://localhost/400/api/v1";
-    apiurl+='/register'
+    try {
+
+      let apiurl=process.env.NEXT_PUBLIC_API_AUTH || "http://localhost:8000/api/";
+    apiurl+='register'
+    
     // Aquí puedes enviar los datos del formulario al servidor o realizar alguna acción con ellos
-    //postRegister(apiurl,userData)
-    console.log('Datos enviados:', userData);
+    postRegister(apiurl,userData)
+    alert("Datos enviados correctamente")
+    //console.log('Datos enviados:', userData);
+    } catch (error) {
+      alert(error) 
+    }     
+    
   };
 
   return (
