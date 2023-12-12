@@ -1,6 +1,7 @@
 
 
 import ButtonAuth from  "@/components/ButtonAuth";
+import Link from 'next/link';
 
 
 const Navbar = () => {
@@ -11,9 +12,9 @@ const Navbar = () => {
         Cervezas artesanas y de importación
       </h1>
       <div className="flex ">
-        <a href="#" className="m-5">
+        <Link href="/register" className="m-5">
           Registro
-        </a>
+        </Link>
         <ButtonAuth/>
         
       </div>

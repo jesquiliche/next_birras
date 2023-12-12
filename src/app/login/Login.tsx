@@ -33,6 +33,7 @@ const Login: React.FC = () => {
       email: userData.email,
       password: userData.password,
       redirect: false,
+      callbackUrl:"/Cervezas"
     });
 
     
@@ -44,7 +45,7 @@ const Login: React.FC = () => {
     } else {
      
       //router.push('/Cervezas');
-      router.back();
+     // router.back();
     }
    
 
