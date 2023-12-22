@@ -3,12 +3,41 @@ import React, { useState, useEffect,ChangeEvent } from 'react';
 import { Tipo, Pais, Color, Graduacion } from "@/interfaces/interfaces";
 import { fetchTipos, fetchPaises, fetchColores, fetchGraduaciones } from "@/services/api";
 
+interface CervezaData {
+  nombre: string;
+  descripcion: string;
+  color_id: number | string;
+  graduacion_id: number | string;
+  tipo_id: number | string;
+  pais_id: number | string;
+  novedad: boolean;
+  oferta: boolean;
+  precio: number;
+  foto: string;
+  marca: string;
+}
+
+
 const Formulario: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [tipos, setTipos] = useState<Tipo[]>([]);
   const [paises, setPaises] = useState<Pais[]>([]);
   const [colores, setColores] = useState<Color[]>([]);
   const [graduaciones, setGraduaciones] = useState<Graduacion[]>([]);
+  const [cerveza,setCerveza]=useState<CervezaData>({
+    nombre: "",
+    descripcion: "",
+    color_id: 0,
+    graduacion_id: 0,
+    tipo_id: 0,
+    pais_id: 0,
+    novedad: true,
+    oferta: false,
+    precio: 0,
+    foto: "",
+    marca: "",
+  });
+
   const [formData, setFormData] = useState({
     tipo: '',
     pais: '',
@@ -40,11 +69,13 @@ const Formulario: React.FC = () => {
 
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
+    setCerveza({
+      ...cerveza,
       [name]: value,
-    }));
-
+    });
+    console.log(name);
+    console.log(value)
+    console.log(cerveza)
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -74,8 +105,9 @@ const Formulario: React.FC = () => {
             Tipo:
           </label>
           <select
-            name="tipo"
-            id="tipo"
+            name="tipo_id"
+            id="tipo_id"
+            value={cerveza.tipo_id}
             onChange={handleOnChange}
             className="form-control"
             required
@@ -95,8 +127,8 @@ const Formulario: React.FC = () => {
             País:
           </label>
           <select
-            name="pais"
-            id="pais"
+            name="pais_id"
+            id="pais_id"
             onChange={handleOnChange}
             className="form-control"
             required
@@ -116,8 +148,8 @@ const Formulario: React.FC = () => {
             Color:
           </label>
           <select
-            name="color"
-            id="color"
+            name="color_id"
+            id="color_id"
             onChange={handleOnChange}
             className="form-control"
             required
@@ -137,8 +169,8 @@ const Formulario: React.FC = () => {
             Graduación:
           </label>
           <select
-            name="graduacion"
-            id="graduacion"
+            name="graduacion_id"
+            id="graduacion_id"
             onChange={handleOnChange}
             className="form-control"
             required
@@ -156,6 +188,8 @@ const Formulario: React.FC = () => {
             <label className="block w-full">Marca:</label>
             <input type="text" className="form-control"
             required
+            name="marca"
+            id="marca"
             >
 
 
@@ -164,9 +198,9 @@ const Formulario: React.FC = () => {
         <div className='p-2'>
             <label className="block w-full">Precio:</label>
             <input type="number" className="form-control"
+            name="precio"
+            id="precio"
             required>
-
-
             </input>
         </div>
         
