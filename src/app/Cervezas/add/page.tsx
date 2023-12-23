@@ -20,8 +20,13 @@ interface CervezaData {
   precio: number;
   foto: string;
   marca: string;
+  file: File | null;
 }
 
+interface File extends Blob {
+  readonly lastModified: number;
+  readonly name: string;
+}
 const Formulario: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [tipos, setTipos] = useState<Tipo[]>([]);
@@ -40,13 +45,7 @@ const Formulario: React.FC = () => {
     precio: 0,
     foto: "",
     marca: "",
-  });
-
-  const [formData, setFormData] = useState({
-    tipo: "",
-    pais: "",
-    color: "",
-    graduacion: "",
+    file:null
   });
 
   useEffect(() => {
@@ -83,7 +82,14 @@ const Formulario: React.FC = () => {
         ...cerveza,
         [name]: isChecked,
       });
-    } else {
+    } else if (e.target.type === "number" || e.target.type==='select-one'){
+      const { name, value } = e.target;
+      setCerveza({
+        ...cerveza,
+        [name]: +value,
+      })
+    } 
+    else {
       const { name, value } = e.target;
       setCerveza({
         ...cerveza,
@@ -96,6 +102,7 @@ const Formulario: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(cerveza)
     // Aquí puedes construir el query string con los valores de formData
 
     // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
@@ -108,6 +115,11 @@ const Formulario: React.FC = () => {
       // Crear una URL de objeto para la vista previa de la imagen
       const imageUrl = URL.createObjectURL(file);
       setImagePreview(imageUrl);
+      setCerveza({
+        ...cerveza,
+        file: file,
+        foto: file.name,
+      });
     }
   };
 
@@ -119,6 +131,19 @@ const Formulario: React.FC = () => {
           onSubmit={handleSubmit}
           className="grid grid-cols-3 w-11/12 mx-auto"
         >
+          <div className="p-2 col-span-3">
+            <label className="block w-full">Nombre:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="nombre"
+              id="nombre"
+              maxLength={150}
+              onChange={handleOnChange}
+              required
+            ></input>
+          </div>
+
           <div className="w-full p-2">
             <label htmlFor="tipo" className="block text-gray-700">
               Tipo:
@@ -126,11 +151,12 @@ const Formulario: React.FC = () => {
             <select
               name="tipo_id"
               id="tipo_id"
-              value={cerveza.tipo_id}
+             
               onChange={handleOnChange}
               className="form-control"
               required
             >
+              <option key={0} ></option>
               {tipos.map((t) => (
                 <option key={t.id} value={t.id}>
                   {t.nombre}
@@ -150,6 +176,7 @@ const Formulario: React.FC = () => {
               className="form-control"
               required
             >
+              <option key={0} ></option>
               {paises.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.nombre}
@@ -169,6 +196,7 @@ const Formulario: React.FC = () => {
               className="form-control"
               required
             >
+              <option key={0} ></option>
               {colores.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.nombre}
@@ -188,6 +216,7 @@ const Formulario: React.FC = () => {
               className="form-control"
               required
             >
+              <option key={0} ></option>
               {graduaciones.map((g) => (
                 <option key={g.id} value={g.id}>
                   {g.nombre}
@@ -213,6 +242,7 @@ const Formulario: React.FC = () => {
               className="form-control"
               name="precio"
               id="precio"
+              step="0.01"
               onChange={handleOnChange}
               required
             ></input>
