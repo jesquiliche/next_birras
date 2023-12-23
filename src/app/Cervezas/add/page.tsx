@@ -67,7 +67,7 @@ const Formulario: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement| HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setCerveza({
       ...cerveza,
@@ -189,6 +189,7 @@ const Formulario: React.FC = () => {
             <input type="text" className="form-control"
             required
             name="marca"
+            onChange={handleOnChange}
             id="marca"
             >
 
@@ -200,15 +201,24 @@ const Formulario: React.FC = () => {
             <input type="number" className="form-control"
             name="precio"
             id="precio"
+            onChange={handleOnChange}
             required>
             </input>
         </div>
         
         <div className='flex p-2 items-center'>
            
-            <input type="checkbox" className="p-2 border rounded bg-gray-100"/>
+            <input type="checkbox"
+            onChange={handleOnChange} 
+            id="novedad"
+            name="novedad"
+            className="p-2 border rounded bg-gray-100"/>
             <label className="ml-4 flex">Novedad</label>
-            <input type="checkbox" className="ml-4 p-2 border rounded bg-gray-100"/>
+            <input type="checkbox"
+            id="oferta"
+            name="oferta"
+            onChange={handleOnChange} 
+            className="ml-4 p-2 border rounded bg-gray-100"/>
             <label className="ml-4 flex">Oferta</label>
         </div>
         <div className='p-2 col-span-2'>
@@ -237,6 +247,9 @@ const Formulario: React.FC = () => {
           
            <label className="ml-4 flex">Descripción:</label>
           <textarea className="form-control row-span-4"
+          id="descipcion"
+          name="descripcion"
+          onChange={handleOnChange}
           required
           ></textarea>
        </div>
