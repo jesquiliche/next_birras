@@ -169,7 +169,7 @@ const Formulario: React.FC = () => {
 
   const handleImagenChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-
+  
     if (file) {
       // Crear una URL de objeto para la vista previa de la imagen
       const imageUrl = URL.createObjectURL(file);
@@ -179,9 +179,17 @@ const Formulario: React.FC = () => {
         file: file,
         foto: file.name,
       });
+    } else {
+      // Si no hay archivo seleccionado, restablecer la vista previa y el estado del archivo
+      setImagePreview(null);
+      setCerveza({
+        ...cerveza,
+        file: null,
+        foto: "", // Otra opción sería mantener el nombre del archivo anterior si lo necesitas
+      });
     }
   };
-
+  
   return (
     <>
       <h1 className="text-2xl font-bold text-center">Añadir producto</h1>
