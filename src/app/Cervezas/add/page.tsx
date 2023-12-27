@@ -1,22 +1,24 @@
 "use client";
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { Tipo, Pais, Color, Graduacion } from "@/interfaces/interfaces";
+import { useSession, signOut } from "next-auth/react";
 import {
   fetchTipos,
   fetchPaises,
   fetchColores,
   fetchGraduaciones,
 } from "@/services/api";
+import DisplayErrors from "@/components/DisplayErrors";
 
 interface CervezaData {
   nombre: string;
   descripcion: string;
-  color_id: number | string;
-  graduacion_id: number | string;
-  tipo_id: number | string;
-  pais_id: number | string;
-  novedad: boolean;
-  oferta: boolean;
+  color_id: number;
+  graduacion_id: number;
+  tipo_id: number;
+  pais_id: number;
+  novedad: boolean | number;
+  oferta: boolean | number;
   precio: number;
   foto: string;
   marca: string;
@@ -28,6 +30,9 @@ interface File extends Blob {
   readonly name: string;
 }
 const Formulario: React.FC = () => {
+  const [ok, setOK] = useState("");
+  const [errors, setErrors] = useState<any>(null);
+  const { data: session, status } = useSession();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [tipos, setTipos] = useState<Tipo[]>([]);
   const [paises, setPaises] = useState<Pais[]>([]);
@@ -45,7 +50,7 @@ const Formulario: React.FC = () => {
     precio: 0,
     foto: "",
     marca: "",
-    file:null
+    file: null,
   });
 
   useEffect(() => {
@@ -72,40 +77,94 @@ const Formulario: React.FC = () => {
 
   const handleOnChange = (
     e: React.ChangeEvent<
-      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement >
+      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+    >
   ) => {
-    
     if (e.target.type === "checkbox") {
       const isChecked = (e.target as HTMLInputElement).checked;
       const { name, value } = e.target;
+      const check = isChecked;
+
       setCerveza({
         ...cerveza,
-        [name]: isChecked,
+        [name]: check,
       });
-    } else if (e.target.type === "number" || e.target.type==='select-one'){
+    } else if (e.target.type === "number" || e.target.type === "select-one") {
       const { name, value } = e.target;
       setCerveza({
         ...cerveza,
         [name]: +value,
-      })
-    } 
-    else {
+      });
+    } else {
       const { name, value } = e.target;
       setCerveza({
         ...cerveza,
         [name]: value,
       });
     }
-
-    console.log(cerveza);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(cerveza)
-    // Aquí puedes construir el query string con los valores de formData
+    setErrors(null);
+    setOK("");
+    const token = session?.authorization.token || "";
+    const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
+    const formData = new FormData();
+    formData.append("nombre", cerveza.nombre);
+    formData.append("descripcion", cerveza.descripcion);
+    formData.append("color_id", cerveza.color_id.toString());
+    formData.append("graduacion_id", cerveza.graduacion_id.toString());
+    formData.append("tipo_id", cerveza.tipo_id.toString());
+    formData.append("pais_id", cerveza.pais_id.toString());
+    formData.append("novedad", cerveza.novedad.toString());
+    formData.append("oferta", cerveza.oferta.toString());
+    formData.append("precio", cerveza.precio.toString());
 
-    // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
+    formData.append("marca", cerveza.marca);
+
+    // Aquí puedes agregar el campo de archivo si es necesario
+    if (cerveza.file) {
+      formData.append("file", cerveza.file);
+      formData.append("foto", cerveza.file.name);
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}cervezas`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      // Manejar la respuesta
+      if (response.ok) {
+        const data = await response.json();
+        setOK("Producto " + data.nombre + " guardado correctamente.");
+        console.log(data);
+        setCerveza({
+          nombre: "",
+          descripcion: "",
+          color_id: 0,
+          graduacion_id: 0,
+          tipo_id: 0,
+          pais_id: 0,
+          novedad: true,
+          oferta: false,
+          precio: 0,
+          foto: "",
+          marca: "",
+          file: null,
+        });
+        setImagePreview(null);
+      } else {
+        const errores = await response.json();
+        setErrors(errores);
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:");
+    }
   };
 
   const handleImagenChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -139,6 +198,7 @@ const Formulario: React.FC = () => {
               name="nombre"
               id="nombre"
               maxLength={150}
+              value={cerveza.nombre}
               onChange={handleOnChange}
               required
             ></input>
@@ -151,12 +211,12 @@ const Formulario: React.FC = () => {
             <select
               name="tipo_id"
               id="tipo_id"
-             
               onChange={handleOnChange}
               className="form-control"
+              value={cerveza.tipo_id}
               required
             >
-              <option key={0} ></option>
+              <option key={0}></option>
               {tipos.map((t) => (
                 <option key={t.id} value={t.id}>
                   {t.nombre}
@@ -173,10 +233,11 @@ const Formulario: React.FC = () => {
               name="pais_id"
               id="pais_id"
               onChange={handleOnChange}
+              value={cerveza.pais_id}
               className="form-control"
               required
             >
-              <option key={0} ></option>
+              <option key={0}></option>
               {paises.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.nombre}
@@ -193,10 +254,11 @@ const Formulario: React.FC = () => {
               name="color_id"
               id="color_id"
               onChange={handleOnChange}
+              value={cerveza.color_id}
               className="form-control"
               required
             >
-              <option key={0} ></option>
+              <option key={0}></option>
               {colores.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.nombre}
@@ -213,10 +275,11 @@ const Formulario: React.FC = () => {
               name="graduacion_id"
               id="graduacion_id"
               onChange={handleOnChange}
+              value={cerveza.graduacion_id}
               className="form-control"
               required
             >
-              <option key={0} ></option>
+              <option key={0}></option>
               {graduaciones.map((g) => (
                 <option key={g.id} value={g.id}>
                   {g.nombre}
@@ -229,6 +292,7 @@ const Formulario: React.FC = () => {
             <input
               type="text"
               className="form-control"
+              value={cerveza.marca}
               required
               name="marca"
               onChange={handleOnChange}
@@ -244,6 +308,7 @@ const Formulario: React.FC = () => {
               id="precio"
               step="0.01"
               onChange={handleOnChange}
+              value={cerveza.precio}
               required
             ></input>
           </div>
@@ -254,7 +319,7 @@ const Formulario: React.FC = () => {
               onChange={handleOnChange}
               id="novedad"
               name="novedad"
-              checked={cerveza.novedad}
+              value={0}
               className="p-2 border rounded bg-gray-100"
             />
             <label className="ml-4 flex">Novedad</label>
@@ -262,8 +327,8 @@ const Formulario: React.FC = () => {
               type="checkbox"
               id="oferta"
               name="oferta"
-              checked={cerveza.oferta}
               onChange={handleOnChange}
+              value={0}
               className="ml-4 p-2 border rounded bg-gray-100"
             />
             <label className="ml-4 flex">Oferta</label>
@@ -273,6 +338,7 @@ const Formulario: React.FC = () => {
             <input
               type="file"
               className="form-control"
+              
               onChange={handleImagenChange}
               required
             ></input>
@@ -295,17 +361,20 @@ const Formulario: React.FC = () => {
               className="form-control row-span-4"
               id="descipcion"
               name="descripcion"
+              value={cerveza.descripcion}
               onChange={handleOnChange}
               required
             ></textarea>
           </div>
 
           <div className="w-full p-2 col-span-3">
+            {errors && <DisplayErrors errors={errors} />}
+            {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
             <button
               type="submit"
-              className="bg-red-600 text-white px-4 py-2 rounded"
+              className="bg-red-600 text-white px-4 py-2 rounded mt-2"
             >
-              Enviar
+              Guardar
             </button>
           </div>
         </form>
