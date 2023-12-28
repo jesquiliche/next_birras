@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
 import Load from "@/components/Load";
 
 import {
@@ -60,6 +59,7 @@ const Page = () => {
 
   useEffect(() => {
     const obtenerCervezas = async () => {
+      setLoading(true);
       try {
         const cervezasData = await fetchCervezas();
 
@@ -79,10 +79,11 @@ const Page = () => {
       } catch (error) {
         console.error("Error fetching data:", error);
       }
+      setLoading(false);
     };
-    setLoading(true);
+  
     obtenerCervezas();
-    setLoading(false);
+    
   }, []);
 
   useEffect(() => {}, [cervezas]);

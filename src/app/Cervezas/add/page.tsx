@@ -9,6 +9,7 @@ import {
   fetchGraduaciones,
 } from "@/services/api";
 import DisplayErrors from "@/components/DisplayErrors";
+import Load from "@/components/Load";
 
 interface CervezaData {
   nombre: string;
@@ -30,6 +31,7 @@ interface File extends Blob {
   readonly name: string;
 }
 const Formulario: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const [ok, setOK] = useState("");
   const [errors, setErrors] = useState<any>(null);
   const { data: session, status } = useSession();
@@ -104,8 +106,27 @@ const Formulario: React.FC = () => {
     }
   };
 
+  const resetCampos = () => {
+    setCerveza({
+      nombre: "",
+      descripcion: "",
+      color_id: 0,
+      graduacion_id: 0,
+      tipo_id: 0,
+      pais_id: 0,
+      novedad: true,
+      oferta: false,
+      precio: 0,
+      foto: "",
+      marca: "",
+      file: null,
+    });
+    setImagePreview(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     setErrors(null);
     setOK("");
     const token = session?.authorization.token || "";
@@ -142,34 +163,24 @@ const Formulario: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         setOK("Producto " + data.nombre + " guardado correctamente.");
-        console.log(data);
-        setCerveza({
-          nombre: "",
-          descripcion: "",
-          color_id: 0,
-          graduacion_id: 0,
-          tipo_id: 0,
-          pais_id: 0,
-          novedad: true,
-          oferta: false,
-          precio: 0,
-          foto: "",
-          marca: "",
-          file: null,
-        });
-        setImagePreview(null);
+        resetCampos();
       } else {
         const errores = await response.json();
         setErrors(errores);
       }
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
+      alert(
+        "No se pudo conectar con el servidor. Puede que la sesión halla expirado."
+      );
       console.error("Error en la solicitud:");
     }
   };
 
   const handleImagenChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-  
+
     if (file) {
       // Crear una URL de objeto para la vista previa de la imagen
       const imageUrl = URL.createObjectURL(file);
@@ -189,7 +200,7 @@ const Formulario: React.FC = () => {
       });
     }
   };
-  
+
   return (
     <>
       <h1 className="text-2xl font-bold text-center">Añadir producto</h1>
@@ -346,7 +357,6 @@ const Formulario: React.FC = () => {
             <input
               type="file"
               className="form-control"
-              
               onChange={handleImagenChange}
               required
             ></input>
@@ -362,7 +372,7 @@ const Formulario: React.FC = () => {
               }}
             />
           </div>
-
+          {loading && <Load />}
           <div className="p-2 items-center col-span-3">
             <label className="ml-4 flex">Descripción:</label>
             <textarea
@@ -374,8 +384,9 @@ const Formulario: React.FC = () => {
               required
             ></textarea>
           </div>
-
+          
           <div className="w-full p-2 col-span-3">
+            
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
             <button
