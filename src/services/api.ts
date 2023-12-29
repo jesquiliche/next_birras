@@ -23,6 +23,28 @@ export async function fetchCervezas(): Promise<Cerveza[]> {
   }
 }
 
+export async function fetchCervezasById(id:string): Promise<Cerveza|undefined> {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+  
+  try {
+    const response = await fetch(
+      `${apiUrl}cervezas/${id}`,{ cache: 'no-store' }
+    );
+
+    if (!response.ok) {
+      throw new Error("No se pudieron obtener los datos de la API");
+    }
+
+    const data = await response.json();
+    
+    return data.data;
+    // Aquí puedes trabajar con los datos obtenidos de la API
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
 export async function fetchCervezasQuery(query: string): Promise<Cerveza[]> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
   try {
