@@ -1,4 +1,5 @@
 import { Cerveza } from '@/interfaces/interfaces'
+import Link from 'next/link'
 import React from 'react'
 
 
@@ -14,8 +15,10 @@ const CervezasTable = ({cervezas}:Props) => {
         <th>Nombre</th>
         <th>Tipo</th>
         <th>País</th>
-        <th>Descripción</th>
+        <th>Color</th>
+        <th>Graduación</th>
         <th>Foto</th>
+        <th className="w-10">Ver</th>
         <th className="w-10">Editar</th>
         <th className="w-10">Borrar</th>
       </tr>
@@ -30,13 +33,19 @@ const CervezasTable = ({cervezas}:Props) => {
           <td className="p-2">{cerveza.nombre}</td>
           <td className="p-2">{cerveza.tipo}</td>
           <td className="p-2">{cerveza.pais}</td>
-          <td className="p-2 w-50">{cerveza.descripcion}</td>
+          <td className="p-2">{cerveza.color}</td>
+          <td className="p-2">{cerveza.graduacion}</td>
           <td className="p-2">
             <img
               src={cerveza.foto}
               className="min-w-[100px]"
               alt={cerveza.nombre}
             />
+          </td>
+          <td className="p-4">
+            <Link href={`/Cervezas/Ver/${cerveza.id}`}className="bg-green-500 text-white rounded-lg px-4 py-1">
+              Ver
+            </Link>
           </td>
           <td className="p-4">
             <a className="bg-yellow-500 text-white rounded-lg px-4 py-1">

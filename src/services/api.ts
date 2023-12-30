@@ -36,8 +36,9 @@ export async function fetchCervezasById(id:string): Promise<Cerveza|undefined> {
     }
 
     const data = await response.json();
+    console.log(data);
     
-    return data.data;
+    return data;
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {
     console.error(error);
