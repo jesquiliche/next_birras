@@ -7,6 +7,7 @@ import {
   fetchCervezasPorPaises,
   fetchCervezasPorTipos,
   fetchConsultaTablas,
+  fetchConsultaBD
 } from "@/services/api";
 
 type TableInfo = {
@@ -17,6 +18,8 @@ export default async function Home() {
   const data = await fetchCervezasPorPaises();
   const tipos = await fetchCervezasPorTipos();
   const tablas = await fetchConsultaTablas();
+  const BD =await fetchConsultaBD();
+
   const cervezas: TableInfo[] = tablas.filter(
     (item: TableInfo) => item.TABLE_NAME === "cervezas"
   );
@@ -31,85 +34,7 @@ export default async function Home() {
     (item: TableInfo) => item.TABLE_NAME === "graduaciones"
   );
 
-  const data2=[{
-    "TABLE_NAME": "cervezas",
-    "TABLE_ROWS": 24,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0781"
-  },
-  {
-    "TABLE_NAME": "cervezas_copia",
-    "TABLE_ROWS": 17,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "colores",
-    "TABLE_ROWS": 8,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "failed_jobs",
-    "TABLE_ROWS": 0,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "graduaciones",
-    "TABLE_ROWS": 5,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "migrations",
-    "TABLE_ROWS": 13,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "paises",
-    "TABLE_ROWS": 10,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "password_reset_tokens",
-    "TABLE_ROWS": 0,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "personal_access_tokens",
-    "TABLE_ROWS": 0,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "sessions",
-    "TABLE_ROWS": 3,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0313"
-  },
-  {
-    "TABLE_NAME": "tipos",
-    "TABLE_ROWS": 33,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0000"
-  },
-  {
-    "TABLE_NAME": "users",
-    "TABLE_ROWS": 27,
-    "data_size_mb": "0.0156",
-    "index_size_mb": "0.0156"
-  },
-  {
-    "TABLE_NAME": "v_cervezas",
-    "TABLE_ROWS": null,
-    "data_size_mb": null,
-    "index_size_mb": null
-  }
-]
+  
   
   const numColores=colores[0].TABLE_ROWS;
   const numTipos=tipos1[0].TABLE_ROWS;
@@ -142,7 +67,7 @@ export default async function Home() {
       <div className="grid grid-cols-2">
         <PieChartComponent data={data} title="Cervezas por países" />
         <PieChartComponent data={tipos} title="Cervezas por tipos" />
-        <BarChartComponent data={data2}/>
+        <BarChartComponent data={BD}/>
       </div>
     </>
   );
