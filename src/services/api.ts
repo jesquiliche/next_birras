@@ -23,6 +23,29 @@ export async function fetchCervezas(): Promise<Cerveza[]> {
   }
 }
 
+export async function fetchCervezasPorPaises() {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+  
+  try {
+    const response = await fetch(
+      `${apiUrl}consultaCervezasPorPais`,{ cache: 'no-store' }
+    );
+
+    if (!response.ok) {
+      throw new Error("No se pudieron obtener los datos de la API");
+    }
+
+    const data = await response.json();
+    
+    return data;
+    // Aquí puedes trabajar con los datos obtenidos de la API
+  } catch (error) {
+    console.error(error);
+    return []; // Debes devolver un valor adecuado en caso de error
+  }
+}
+
+
 export async function fetchCervezasById(id:string): Promise<Cerveza|undefined> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
   
@@ -194,3 +217,30 @@ export async function postRegister(url:string,datos: {
    
   }
 };
+
+export async function fetchDeleteCervezasById(id: string, token: string) {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+
+  try {
+    const response = await fetch(`${apiUrl}cervezas/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al eliminar la cerveza con ID ${id}`);
+    }
+
+    const data = await response.json();
+  
+
+    return data;
+  
+  } catch (error) {
+    console.error(error);
+  }
+}
