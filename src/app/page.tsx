@@ -18,6 +18,7 @@ export default async function Home() {
   const data = await fetchCervezasPorPaises();
   const tipos = await fetchCervezasPorTipos();
   const tablas = await fetchConsultaTablas();
+  const BD=await fetchConsultaBD();
   //const BD =await fetchConsultaBD();
 
  // console.log(BD);
@@ -69,7 +70,7 @@ export default async function Home() {
       <div className="grid grid-cols-2">
         <PieChartComponent data={data} title="Cervezas por países" />
         <PieChartComponent data={tipos} title="Cervezas por tipos" />
-        {/*<BarChartComponent data={BD}>*/}
+        <BarChartComponent data={BD} />
       </div>
     </>
   );
