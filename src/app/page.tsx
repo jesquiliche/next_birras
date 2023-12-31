@@ -1,7 +1,6 @@
 import Image from "next/image";
 
-import ChartComponent from "../components/Grafico";
-import PieChartComponent from "../components/tarta";
+import ChartComponent from "../components/Grafico";import PieChartComponent from "../components/tarta";
 import BarChartComponent from "../components/Barras";
 import {
   fetchCervezasPorPaises,
@@ -14,11 +13,14 @@ type TableInfo = {
   TABLE_NAME: string;
   TABLE_ROWS: number | null;
 };
+
 export default async function Home() {
   const data = await fetchCervezasPorPaises();
   const tipos = await fetchCervezasPorTipos();
   const tablas = await fetchConsultaTablas();
-  const BD =await fetchConsultaBD();
+  //const BD =await fetchConsultaBD();
+
+ // console.log(BD);
 
   const cervezas: TableInfo[] = tablas.filter(
     (item: TableInfo) => item.TABLE_NAME === "cervezas"
@@ -67,7 +69,7 @@ export default async function Home() {
       <div className="grid grid-cols-2">
         <PieChartComponent data={data} title="Cervezas por países" />
         <PieChartComponent data={tipos} title="Cervezas por tipos" />
-        <BarChartComponent data={BD}/>
+        {/*<BarChartComponent data={BD}>*/}
       </div>
     </>
   );

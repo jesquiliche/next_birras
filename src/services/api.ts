@@ -76,7 +76,8 @@ export async function fetchCervezasPorPaises() {
       );
   
       if (!response.ok) {
-        throw new Error("No se pudieron obtener los datos de la API");
+
+        throw new Error( `${apiUrl}consultaTablas`);
       }
   
       const data = await response.json();
