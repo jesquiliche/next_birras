@@ -44,7 +44,51 @@ export async function fetchCervezasPorPaises() {
     return []; // Debes devolver un valor adecuado en caso de error
   }
 }
+  export async function fetchCervezasPorTipos() {
+    const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+    
+    try {
+      const response = await fetch(
+        `${apiUrl}consultaCervezasPorTipo`,{ cache: 'no-store' }
+      );
+  
+      if (!response.ok) {
+        throw new Error("No se pudieron obtener los datos de la API");
+      }
+  
+      const data = await response.json();
+      
+      return data;
+      // Aquí puedes trabajar con los datos obtenidos de la API
+    } catch (error) {
+      console.error(error);
+      return []; // Debes devolver un valor adecuado en caso de error
+    }
+  
+  }
 
+  export async function fetchConsultaTablas() {
+    const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+    
+    try {
+      const response = await fetch(
+        `${apiUrl}consultaTablas`,{ cache: 'no-store' }
+      );
+  
+      if (!response.ok) {
+        throw new Error("No se pudieron obtener los datos de la API");
+      }
+  
+      const data = await response.json();
+      
+      return data;
+      // Aquí puedes trabajar con los datos obtenidos de la API
+    } catch (error) {
+      console.error(error);
+      return []; // Debes devolver un valor adecuado en caso de error
+    }
+  
+  }
 
 export async function fetchCervezasById(id:string): Promise<Cerveza|undefined> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
