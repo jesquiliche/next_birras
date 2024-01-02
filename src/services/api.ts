@@ -1,5 +1,5 @@
 'use server'
-import { Cerveza, Color, Pais, Tipo,Graduacion } from "@/interfaces/interfaces";
+import { Cerveza, Color, Pais, Tipo,Graduacion,CervezaData } from "@/interfaces/interfaces";
 
 export async function fetchCervezas(): Promise<Cerveza[]> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
@@ -114,10 +114,10 @@ export async function fetchCervezasPorPaises() {
   
   }
 
-export async function fetchCervezasById(id:string): Promise<Cerveza|undefined> {
+export async function fetchCervezasById(id:string): Promise<CervezaData> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
   
-  try {
+  
     const response = await fetch(
       `${apiUrl}cervezas/${id}`,{ cache: 'no-store' }
     );
@@ -131,9 +131,7 @@ export async function fetchCervezasById(id:string): Promise<Cerveza|undefined> {
     
     return data;
     // Aquí puedes trabajar con los datos obtenidos de la API
-  } catch (error) {
-    console.error(error);
-  }
+  
 }
 
 

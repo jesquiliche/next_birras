@@ -1,4 +1,5 @@
 import { fetchCervezasById } from "@/services/api";
+import { CervezaData } from "@/interfaces/interfaces";
 
 export default async function Detalle({ params }: { params: { id: string } }) {
   const id = params.id;
