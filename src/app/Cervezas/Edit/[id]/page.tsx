@@ -7,7 +7,7 @@ import {
   fetchPaises,
   fetchColores,
   fetchGraduaciones,
-  fetchCervezasById
+  fetchCervezasById,
 } from "@/services/api";
 import DisplayErrors from "@/components/DisplayErrors";
 import Load from "@/components/Load";
@@ -32,7 +32,7 @@ interface File extends Blob {
   readonly name: string;
 }
 export default async function Edit({ params }: { params: { id: string } }) {
-  const id=params.id;
+  const id = params.id;
   const [loading, setLoading] = useState(false);
   const [ok, setOK] = useState("");
   const [errors, setErrors] = useState<any>(null);
@@ -74,7 +74,6 @@ export default async function Edit({ params }: { params: { id: string } }) {
 
         const data = await fetchCervezasById(id);
         setCerveza(data);
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -132,9 +131,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
   };
-
 
   return (
     <>
@@ -170,9 +167,8 @@ export default async function Edit({ params }: { params: { id: string } }) {
               value={cerveza.tipo_id}
               required
             >
-            
               {tipos.map((t) => (
-                <option key={t.id} value={cerveza.tipo_id}>
+                <option key={t.id} selected={t.id == cerveza.tipo_id}>
                   {t.nombre}
                 </option>
               ))}
@@ -191,9 +187,12 @@ export default async function Edit({ params }: { params: { id: string } }) {
               className="form-control"
               required
             >
-              
               {paises.map((p) => (
-                <option key={p.id} value={cerveza.pais_id}>
+                <option
+                  key={p.id}
+                  value={p.id}
+                  selected={p.id == cerveza.pais_id}
+                >
                   {p.nombre}
                 </option>
               ))}
@@ -212,9 +211,12 @@ export default async function Edit({ params }: { params: { id: string } }) {
               className="form-control"
               required
             >
-              
               {colores.map((c) => (
-                <option key={c.id} value={cerveza.color_id}>
+                <option
+                  key={c.id}
+                  value={c.id}
+                  selected={c.id == cerveza.color_id}
+                >
                   {c.nombre}
                 </option>
               ))}
@@ -233,9 +235,12 @@ export default async function Edit({ params }: { params: { id: string } }) {
               className="form-control"
               required
             >
-              
               {graduaciones.map((g) => (
-                <option key={g.id} value={cerveza.graduacion_id}>
+                <option
+                  key={g.id}
+                  value={g.id}
+                  selected={g.id == cerveza.graduacion_id}
+                >
                   {g.nombre}
                 </option>
               ))}
@@ -293,7 +298,6 @@ export default async function Edit({ params }: { params: { id: string } }) {
               id="image-preview"
               src={cerveza.foto}
               alt="Vista previa de la imagen"
-            
             />
           </div>
           {loading && <Load />}
@@ -308,9 +312,8 @@ export default async function Edit({ params }: { params: { id: string } }) {
               required
             ></textarea>
           </div>
-          
+
           <div className="w-full p-2 col-span-3">
-            
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
             <button
@@ -324,5 +327,4 @@ export default async function Edit({ params }: { params: { id: string } }) {
       </div>
     </>
   );
-};
-
+}
