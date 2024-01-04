@@ -32,7 +32,7 @@ const handler = NextAuth({
           });
 
           if (res.status === 401) {
-            console.log(res.status);
+            
             throw new Error("Credenciales no válidas");
           }
 

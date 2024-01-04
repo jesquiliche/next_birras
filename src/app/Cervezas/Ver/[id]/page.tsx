@@ -1,5 +1,4 @@
 import { fetchCervezasById } from "@/services/api";
-import { CervezaData } from "@/interfaces/interfaces";
 
 export default async function Detalle({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -15,32 +14,33 @@ export default async function Detalle({ params }: { params: { id: string } }) {
             <img src={cerveza?.foto} />
           </div>
           <div className="bg-gray-100 p-4 mb-2">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+              {cerveza?.novedad == 0 && (
+                <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
+                  <label className="font-bold p-2 italic text-white">
+                    Novedad
+                  </label>
+                </div>
+              )}
+              </div>
+              <div>
+              {cerveza?.oferta == 0 && (
+                <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
+                  <label className="font-bold p-2 italic text-white text-center">
+                    Oferta
+                  </label>
+                </div>
+              )}
+              </div>
+            </div>
+
             <label className="font-bold mt-2 text-lg">Nombre:</label>
             <h1>{cerveza?.nombre}</h1>
             <label className="font-bold mt-2 text-lg">Descripción:</label>
             <h1>{cerveza?.descripcion}</h1>
             {/* La línea siguiente tiene un div de más (un ">" de más) */}
             <div className="grid grid-cols-2 gap-4 bg-gray-100 rounded-lg mt-2">
-            {cerveza?.novedad == 0 && (
-                  <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
-                  <label className="font-bold p-2 italic text-white">
-                    Novedad
-                  </label>
-                  </div>
-                )}
-              
-              
-                {cerveza?.oferta == 0 && (
-              <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
-
-                  <label className="font-bold p-2 italic text-white text-center">
-                    Oferta
-                  </label>
-                  </div>
-                )}
-              
-              
-          
               <div>
                 {" "}
                 {/* Quité el ">" sobrante */}
@@ -75,9 +75,6 @@ export default async function Detalle({ params }: { params: { id: string } }) {
                   Graduación: {cerveza?.graduacion}
                 </label>
               </div>
-              
-              
-              
             </div>
           </div>
         </div>

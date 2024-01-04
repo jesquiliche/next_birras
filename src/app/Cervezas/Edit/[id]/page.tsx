@@ -24,7 +24,6 @@ interface CervezaData {
   precio: number;
   foto: string;
   marca: string;
-  file: File | null;
 }
 
 interface File extends Blob {
@@ -54,7 +53,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
     precio: 0,
     foto: "",
     marca: "",
-    file: null,
+  
   });
 
   useEffect(() => {
@@ -79,7 +78,8 @@ export default async function Edit({ params }: { params: { id: string } }) {
       }
     };
 
-    fetchData();
+   fetchData();
+  
   }, []);
 
   const handleOnChange = (
@@ -87,50 +87,25 @@ export default async function Edit({ params }: { params: { id: string } }) {
       HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
     >
   ) => {
-    if (e.target.type === "checkbox") {
-      const isChecked = (e.target as HTMLInputElement).checked;
-      const { name, value } = e.target;
-      const check = isChecked;
-
-      setCerveza({
+  
+   try {
+    
+     console.log(e.target.value)
+    /*  setCerveza({
         ...cerveza,
-        [name]: check,
-      });
-    } else if (e.target.type === "number" || e.target.type === "select-one") {
-      const { name, value } = e.target;
-      setCerveza({
-        ...cerveza,
-        [name]: +value,
-      });
-    } else {
-      const { name, value } = e.target;
-      setCerveza({
-        ...cerveza,
-        [name]: value,
-      });
+        [e.target.name]: e.target.value,
+      })*/
+    } catch(error) {
+      alert(error)
     }
+      
+    
   };
 
-  const resetCampos = () => {
-    setCerveza({
-      nombre: "",
-      descripcion: "",
-      color_id: 0,
-      graduacion_id: 0,
-      tipo_id: 0,
-      pais_id: 0,
-      novedad: true,
-      oferta: false,
-      precio: 0,
-      foto: "",
-      marca: "",
-      file: null,
-    });
-    setImagePreview(null);
-  };
-
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(cerveza);
   };
 
   return (
@@ -138,25 +113,44 @@ export default async function Edit({ params }: { params: { id: string } }) {
       <h1 className="text-2xl font-bold text-center">Editar producto</h1>
       <div className="w-11/12 mx-auto border-2 rounded-lg shadow-lg py-2">
         <form
-          onSubmit={handleSubmit}
+        
           className="grid grid-cols-3 w-11/12 mx-auto"
-        >
-          <div className="p-2 col-span-3">
+        >  
+        <div className="p-2 col-span-1">
+        <img
+          className="rounded-lg h-80 mt-2"
+          id="image-preview"
+          src={cerveza.foto}
+          alt="Vista previa de la imagen"
+        />
+      </div>
+          <div className="p-2 col-span-2">
             <label className="block w-full">Nombre:</label>
             <input
               type="text"
-              className="form-control"
+              className="form-control mb-2"
               name="nombre"
               id="nombre"
               maxLength={150}
               value={cerveza.nombre}
               onChange={handleOnChange}
+            
               required
             ></input>
+             <label className=" ">Descripción:</label>
+              <textarea
+              className="form-control row-span-4 h-64"
+              id="descipcion"
+              name="descripcion"
+              value={cerveza.descripcion}
+              onChange={handleOnChange}
+              required
+            ></textarea>
+
           </div>
 
           <div className="w-full p-2">
-            <label htmlFor="tipo" className="block text-gray-700">
+            <label  className="block text-gray-700">
               Tipo:
             </label>
             <select
@@ -176,7 +170,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
           </div>
 
           <div className="w-full p-2">
-            <label htmlFor="pais" className="block text-gray-700">
+            <label className="block text-gray-700">
               País:
             </label>
             <select
@@ -200,7 +194,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
           </div>
 
           <div className="w-full p-2">
-            <label htmlFor="color" className="block text-gray-700">
+            <label  className="block text-gray-700">
               Color:
             </label>
             <select
@@ -224,7 +218,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
           </div>
 
           <div className="w-full p-2">
-            <label htmlFor="graduacion" className="block text-gray-700">
+            <label className="block text-gray-700">
               Graduación:
             </label>
             <select
@@ -272,7 +266,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
             ></input>
           </div>
 
-          <div className="flex p-2 items-center">
+        {/*  <div className="flex p-2 items-center">
             <input
               type="checkbox"
               onChange={handleOnChange}
@@ -291,28 +285,10 @@ export default async function Edit({ params }: { params: { id: string } }) {
               className="ml-4 p-2 border rounded bg-gray-100"
             />
             <label className="ml-4 flex">Oferta</label>
-          </div>
-          <div className="p-2 col-span-2">
-            <img
-              className="rounded-lg h-80 mt-2"
-              id="image-preview"
-              src={cerveza.foto}
-              alt="Vista previa de la imagen"
-            />
-          </div>
+          </div>*/}
+        
           {loading && <Load />}
-          <div className="p-2 items-center col-span-3">
-            <label className="ml-4 flex">Descripción:</label>
-            <textarea
-              className="form-control row-span-4"
-              id="descipcion"
-              name="descripcion"
-              value={cerveza.descripcion}
-              onChange={handleOnChange}
-              required
-            ></textarea>
-          </div>
-
+          
           <div className="w-full p-2 col-span-3">
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}

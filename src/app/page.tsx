@@ -19,10 +19,7 @@ export default async function Home() {
   const tipos = await fetchCervezasPorTipos();
   const tablas = await fetchConsultaTablas();
   const BD=await fetchConsultaBD();
-  //const BD =await fetchConsultaBD();
-
- // console.log(BD);
-
+  
   const cervezas: TableInfo[] = tablas.filter(
     (item: TableInfo) => item.TABLE_NAME === "cervezas"
   );
@@ -43,9 +40,7 @@ export default async function Home() {
   const numTipos=tipos1[0].TABLE_ROWS;
   const numCervezas=cervezas[0].TABLE_ROWS;
   const numGraduaciones=graduaciones[0].TABLE_ROWS;
-  
-  //console.log(tablas);
-
+    
   return (
     <>
       <h1 className="text-2xl font-bold p-4 text-center">Estadisticas</h1>

@@ -39,7 +39,7 @@ const Register: React.FC = () => {
     } else {
       alert(status);
     }
-    //console.log('Datos enviados:', userData);
+    
     } catch (error) {
       alert(error) 
     }     

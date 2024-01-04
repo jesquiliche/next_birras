@@ -130,7 +130,7 @@ const Formulario: React.FC = () => {
     setErrors(null);
     setOK("");
     const token = session?.authorization.token || "";
-    const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
     const formData = new FormData();
     formData.append("nombre", cerveza.nombre);
     formData.append("descripcion", cerveza.descripcion);
@@ -171,6 +171,7 @@ const Formulario: React.FC = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
+      console.log(error);
       alert(
         "No se pudo conectar con el servidor. Puede que la sesión halla expirado."
       );
@@ -209,7 +210,27 @@ const Formulario: React.FC = () => {
           onSubmit={handleSubmit}
           className="grid grid-cols-3 w-11/12 mx-auto"
         >
-          <div className="p-2 col-span-3">
+          <div className="p-2 col-span-1">
+            <label className="block w-full">Foto:</label>
+            <input
+              type="file"
+              className="form-control"
+              onChange={handleImagenChange}
+              required
+            ></input>
+            <img
+              className="rounded-lg h-80 mt-2"
+              id="image-preview"
+              src={imagePreview || ""}
+              alt="Vista previa de la imagen"
+              style={{
+                display: imagePreview ? "block" : "none",
+                maxWidth: "100%",
+                margin: "0 auto",
+              }}
+            />
+          </div>
+          <div className="p-2 col-span-2">
             <label className="block w-full">Nombre:</label>
             <input
               type="text"
@@ -221,6 +242,16 @@ const Formulario: React.FC = () => {
               onChange={handleOnChange}
               required
             ></input>
+
+            <label className="">Descripción:</label>
+            <textarea
+              className="form-control row-span-4 h-64"
+              id="descipcion"
+              name="descripcion"
+              value={cerveza.descripcion}
+              onChange={handleOnChange}
+              required
+            ></textarea>
           </div>
 
           <div className="w-full p-2">
@@ -352,41 +383,10 @@ const Formulario: React.FC = () => {
             />
             <label className="ml-4 flex">Oferta</label>
           </div>
-          <div className="p-2 col-span-2">
-            <label className="block w-full">Foto:</label>
-            <input
-              type="file"
-              className="form-control"
-              onChange={handleImagenChange}
-              required
-            ></input>
-            <img
-              className="rounded-lg h-80 mt-2"
-              id="image-preview"
-              src={imagePreview || ""}
-              alt="Vista previa de la imagen"
-              style={{
-                display: imagePreview ? "block" : "none",
-                maxWidth: "100%",
-                margin: "0 auto",
-              }}
-            />
-          </div>
+
           {loading && <Load />}
-          <div className="p-2 items-center col-span-3">
-            <label className="ml-4 flex">Descripción:</label>
-            <textarea
-              className="form-control row-span-4"
-              id="descipcion"
-              name="descripcion"
-              value={cerveza.descripcion}
-              onChange={handleOnChange}
-              required
-            ></textarea>
-          </div>
-          
+
           <div className="w-full p-2 col-span-3">
-            
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
             <button
