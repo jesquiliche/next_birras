@@ -29,8 +29,8 @@ const Edit = ({ params }) => {
     graduacion_id: 0,
     tipo_id: 0,
     pais_id: 0,
-    novedad: true,
-    oferta: false,
+    novedad: 1,
+    oferta: 1,
     precio: 0,
     foto: "",
     marca: "",
@@ -63,14 +63,13 @@ const Edit = ({ params }) => {
 
   const handleOnChange = (e) => {
     if (e.target.type === "checkbox") {
-      const isChecked = e.checked;
-      const { name, value } = e.target;
-      const check = isChecked;
-
-      setCerveza({
-        ...cerveza,
-        [name]: check,
-      });
+    const { name, checked } = e.target;
+    const valor = checked ? 1 : 0;
+    
+    setCerveza({
+      ...cerveza,
+      [name]: valor,
+    });
     } else if (e.target.type === "number" || e.target.type === "select-one") {
       const { name, value } = e.target;
       setCerveza({
@@ -272,13 +271,35 @@ const Edit = ({ params }) => {
               required
             ></input>
           </div>
+          <div className="flex p-2 items-center">
+            <input
+              type="checkbox"
+              onChange={handleOnChange}
+              id="novedad"
+              name="novedad"
+              checked={cerveza.novedad!=0}
+              className="p-2 border rounded bg-gray-100"
+            />
+            <label className="ml-4 flex">Novedad</label>
+            <input
+              type="checkbox"
+              id="oferta"
+              name="oferta"
+              checked={cerveza.oferta!=0}
+              onChange={handleOnChange}
+              value={0}
+              className="ml-4 p-2 border rounded bg-gray-100"
+            />
+            <label className="ml-4 flex">Oferta</label>
+          </div>
+
           {loading && <Load />}
-          <div className="w-full p-2 col-span-3">
+          <div className="w-full p-2 col-span-3 mt-2">
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
             <button
               type="submit"
-              className="bg-red-600 text-white px-4 py-2 rounded mt-2"
+              className="btn-primary mt-2"
             >
               Guardar
             </button>

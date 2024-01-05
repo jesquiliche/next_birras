@@ -391,7 +391,7 @@ const Formulario: React.FC = () => {
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
             <button
               type="submit"
-              className="bg-red-600 text-white px-4 py-2 rounded mt-2"
+              className="btn-primary"
             >
               Guardar
             </button>

@@ -130,7 +130,7 @@ export async function fetchCervezasById(id: string): Promise<CervezaData> {
   // Aquí puedes trabajar con los datos obtenidos de la API
 }
 
-export async function fetchCervezasQuery(query: string): Promise<Cerveza[]> {
+export async function fetchCervezasQuery(query: string) {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
   try {
     const response = await fetch(`${apiUrl}cervezas?${query}`, {
@@ -142,7 +142,7 @@ export async function fetchCervezasQuery(query: string): Promise<Cerveza[]> {
     }
 
     const data = await response.json();
-    return data.data;
+    return data;
 
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {

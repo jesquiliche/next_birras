@@ -26,9 +26,11 @@ import Cards from "@/components/Cards";
 const Page = () => {
   //Paginación
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
-  const [totalRecords, setTotalRecords]=useState(0);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [nombre, setNombre] = useState("");
+
 
   const [loading, setLoading] = useState(false);
   const [cervezas, setCervezas] = useState<Cerveza[]>([]);
@@ -51,16 +53,16 @@ const Page = () => {
     } else {
       x = totalPages;
     }
-  
+
     const pageButtons = [];
-  
+
     // Genera los botones de página en el rango calculado
     for (let i = 1; i <= x; i++) {
       pageButtons.push(
         <button
           key={i}
-          className={`flex  justify-center  bg-gray-500  shadow-md text-white  hover:bg-gray-700 px-4 py-1  items-center text-center border ${
-            i === page ? 'bg-gray-600' : 'bg-gray-500'
+          className={`flex  justify-center btn-page ${
+            i === page ? "bg-gray-600" : "btn-page"
           }  hover:bg-gray-800`}
           onClick={() => setPage(i)}
         >
@@ -68,25 +70,25 @@ const Page = () => {
         </button>
       );
     }
-  
+
     const retrocedePagina = () => {
       if (page > 1) {
         setPage(page - 1); // Resta 1 para retroceder de página si no estás en la primera página
       }
     };
-  
+
     const primeraPagina = () => {
       if (page > 1) {
         setPage(1);
       }
     };
-  
+
     const ultimaPagina = () => {
       if (page < totalPages) {
         setPage(totalPages);
       }
     };
-  
+
     const avanzaPagina = () => {
       if (page < totalPages) {
         setPage(page + 1); // Suma 1 para avanzar de página si no estás en la última página
@@ -95,24 +97,18 @@ const Page = () => {
     return (
       <>
         <h4 className="text-center font-semibold">
-          <p>Resultados : {totalRecords}</p>
-            Página : {page} de {totalPages} 
+          
+          {totalRecords !== 0 ? `${page} de ${totalPages}` : ""}
         </h4>
         <div className="flex flex-col items-center mb-2">
           <div className="inline-flex mt-2">
             {/* Oculta los botones "<<" y "<" si estás en la primera página */}
             {page > 1 && (
               <>
-                <button
-                  className="btn-page"
-                   onClick={primeraPagina}
-                >
+                <button className="btn-page" onClick={primeraPagina}>
                   {"<<"}
                 </button>
-                <button
-                  className="btn-page"
-                 onClick={retrocedePagina}
-                >
+                <button className="btn-page" onClick={retrocedePagina}>
                   {"<"}
                 </button>
               </>
@@ -121,16 +117,10 @@ const Page = () => {
             {/* Oculta los botones ">>" y ">" si estás en la última página */}
             {page < totalPages && (
               <>
-                <button
-                   onClick={avanzaPagina}
-                  className="btn-page"
-                >
+                <button onClick={avanzaPagina} className="btn-page">
                   {">"}
                 </button>
-                <button
-                   onClick={ultimaPagina}
-                  className="btn-page"
-                >
+                <button onClick={ultimaPagina} className="btn-page">
                   {">>"}
                 </button>
               </>
@@ -139,7 +129,7 @@ const Page = () => {
         </div>
       </>
     );
-      };
+  };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -149,15 +139,21 @@ const Page = () => {
     }));
   };
 
+  const CervezasQuery = async (queryString: string) => {
+    // Aquí puedes construir el query string con los valores de formData
+
+    const cervezas = await fetchCervezasQuery(queryString);
+    setCervezas(cervezas.data);
+
+    setTotalPages(cervezas.last_page);
+    setTotalRecords(cervezas.total);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes construir el query string con los valores de formData
-    const queryString = `page=${page}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&graduacion_id=${formData.graduacion}`;
+    const queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&nombre=${nombre}&graduacion_id=${formData.graduacion}`;
 
-    setLoading(true);
-    setCervezas(await fetchCervezasQuery(queryString));
-    setLoading(false);
-
+    await CervezasQuery(queryString);
     // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
   };
 
@@ -168,10 +164,8 @@ const Page = () => {
         const cervezasData = await fetchCervezas();
 
         setCervezas(cervezasData.data);
-        console.log("Paginas ");
-        console.log(cervezasData.last_page);
         setTotalPages(cervezasData.last_page);
-        setTotalRecords(cervezasData.total)
+        setTotalRecords(cervezasData.total);
 
         const tiposData = await fetchTipos();
         setTipos(tiposData);
@@ -189,139 +183,155 @@ const Page = () => {
       }
       setLoading(false);
     };
-  
+
     obtenerCervezas();
-    
   }, []);
 
-  useEffect(() => {}, [cervezas]);
+  useEffect(() => {
+    const ObtenerDatos = async () => {
+      const queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&graduacion_id=${formData.graduacion}`;
+
+      await CervezasQuery(queryString);
+    };
+    ObtenerDatos();
+  }, [page]);
 
   return (
     <>
-    <div>
-      <h1 className="text-2xl font-bold text-center">Cervezas</h1>
-      <div className="w-11/12 mx-auto border-2 p-4 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-center">Filtro</h1>
+      <div>
+        <h1 className="text-2xl font-bold text-center">Cervezas</h1>
+        <div className="w-11/12 mx-auto border-2 p-4 rounded-lg shadow-lg">
+          <h1 className="text-2xl font-bold text-center">Filtro</h1>
 
-        {loading ? <Load/>:(<form onSubmit={handleSubmit} className="flex flex-wrap">
-          <div className="w-full md:w-1/4 p-2">
-            <label htmlFor="tipo" className="block text-gray-700">
-              Tipo:
-            </label>
-            <select
-              name="tipo"
-              id="tipo"
-              onChange={handleOnChange}
-              value={formData.tipo}
-              className="form-control"
-            >
-              <option key="0" value="0"></option>
-
-              {tipos.map((t) => (
-                <option
-                  key={t.id}
-                  value={t.id}
-                  selected={t.id == +formData.tipo}
+          {loading ? (
+            <Load />
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-wrap">
+              <div className="w-full md:w-1/4 p-2">
+                <label htmlFor="tipo" className="block text-gray-700">
+                  Tipo:
+                </label>
+                <select
+                  name="tipo"
+                  id="tipo"
+                  onChange={handleOnChange}
+                  value={formData.tipo}
+                  className="form-control"
                 >
-                  {t.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+                  <option key="0" value="0"></option>
 
-          <div className="w-full md:w-1/4 p-2">
-            <label htmlFor="pais" className="block text-gray-700">
-              País:
-            </label>
-            <select
-              name="pais"
-              id="pais"
-              onChange={handleOnChange}
-              className="form-control"
-            >
-              <option key="0" value="0"></option>
+                  {tipos.map((t) => (
+                    <option
+                      key={t.id}
+                      value={t.id}
+                      selected={t.id == +formData.tipo}
+                    >
+                      {t.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              {paises.map((p) => (
-                <option
-                  key={p.id}
-                  value={p.id}
-                  selected={p.id == +formData.pais}
+              <div className="w-full md:w-1/4 p-2">
+                <label htmlFor="pais" className="block text-gray-700">
+                  País:
+                </label>
+                <select
+                  name="pais"
+                  id="pais"
+                  onChange={handleOnChange}
+                  className="form-control"
                 >
-                  {p.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+                  <option key="0" value="0"></option>
 
-          <div className="w-full md:w-1/4 p-2">
-            <label htmlFor="color" className="block text-gray-700">
-              Color:
-            </label>
-            <select
-              name="color"
-              id="color"
-              onChange={handleOnChange}
-              className="form-control"
-            >
-              <option key="0" value="0"></option>
+                  {paises.map((p) => (
+                    <option
+                      key={p.id}
+                      value={p.id}
+                      selected={p.id == +formData.pais}
+                    >
+                      {p.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              {colores.map((c) => (
-                <option
-                  key={c.id}
-                  value={c.id}
-                  selected={c.id == +formData.color}
+              <div className="w-full md:w-1/4 p-2">
+                <label htmlFor="color" className="block text-gray-700">
+                  Color:
+                </label>
+                <select
+                  name="color"
+                  id="color"
+                  onChange={handleOnChange}
+                  className="form-control"
                 >
-                  {c.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+                  <option key="0" value="0"></option>
 
-          <div className="w-full md:w-1/4 p-2">
-            <label htmlFor="graduacion" className="block text-gray-700">
-              Graduación:
-            </label>
-            <select
-              name="graduacion"
-              id="graduacion"
-              onChange={handleOnChange}
-              className="form-control"
-            >
-              <option key="0" value="0"></option>
+                  {colores.map((c) => (
+                    <option
+                      key={c.id}
+                      value={c.id}
+                      selected={c.id == +formData.color}
+                    >
+                      {c.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-              {graduaciones.map((g) => (
-                <option
-                  key={g.id}
-                  value={g.id}
-                  selected={g.id == +formData.graduacion}
+              <div className="w-full md:w-1/4 p-2">
+                <label htmlFor="graduacion" className="block text-gray-700">
+                  Graduación:
+                </label>
+                <select
+                  name="graduacion"
+                  id="graduacion"
+                  onChange={handleOnChange}
+                  className="form-control"
                 >
-                  {g.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+                  <option key="0" value="0"></option>
 
-          <div className="w-full p-2">
-            <button
-              type="submit"
-              className="bg-red-600 text-white px-4 py-2 rounded-lg"
-            >
-              Filtrar
-            </button>
-            <Link
-              href="/Cervezas/add/"
-              className="ml-2 bg-red-600 text-white px-4 py-2 rounded-lg"
-            >
-              Añadir
-            </Link>
-          </div>
-        </form>)}
+                  {graduaciones.map((g) => (
+                    <option
+                      key={g.id}
+                      value={g.id}
+                      selected={g.id == +formData.graduacion}
+                    >
+                      {g.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+        
 
-        <h1 className="text-2xl font-bold text-center">Lista</h1>
-                <RenderPagination/>
-        {loading ? <Load /> : <Cards cervezas={cervezas} setCervezas={setCervezas} />}
-      </div>{" "}
-    </div>
+              <div className="flex items-center p-2">
+                <button
+                  type="submit"
+                  className="btn-primary"
+                >
+                  Filtrar
+                </button>
+                <Link
+                  href="/Cervezas/add/"
+                  className="btn-primary"
+                >
+                  Añadir
+                </Link>
+              </div>
+            </form>
+          )}
+
+         
+          <p className="text-center font-bold">Resultados : {totalRecords}</p>
+          {totalRecords>limit && (<RenderPagination />)}
+          {loading ? (
+            <Load />
+          ) : (
+            <Cards cervezas={cervezas} setCervezas={setCervezas} />
+          )}
+        </div>{" "}
+      </div>
     </>
   );
 };
