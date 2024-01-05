@@ -7,6 +7,7 @@ const PieChartComponent = ({ data, title }) => {
   const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
   return (
+    
     <div className='rounded-lg border-2 border-gray-200 shadow-lg p-4 mx-auto mt-4'>
       <h1 className='text-2xl font-bold text-center '>{title}</h1>
       <PieChart width={400} height={200}>
@@ -18,6 +19,7 @@ const PieChartComponent = ({ data, title }) => {
         <Tooltip formatter={(value, name) => [value, name]} />
       </PieChart>
     </div>
+    
   );
 };
 

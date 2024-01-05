@@ -8,7 +8,7 @@ import {
   CervezaData,
 } from "@/interfaces/interfaces";
 
-export async function fetchCervezas(): Promise<Cerveza[]> {
+export async function fetchCervezas() {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
 
   try {
@@ -20,7 +20,7 @@ export async function fetchCervezas(): Promise<Cerveza[]> {
 
     const data = await response.json();
 
-    return data.data;
+    return data;
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {
     console.error(error);

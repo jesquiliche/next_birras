@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import SessionAuthProvider from '@/context/SessionAuthProvider';
 
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -27,8 +28,8 @@ export default function RootLayout({
           <Sidebar />
                    <div className='flex-1 '>
                    <Navbar />
- 
             {children}
+         
           </div>
 
         </div>

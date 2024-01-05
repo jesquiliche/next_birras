@@ -1,6 +1,7 @@
-import Image from "next/image";
 
-import ChartComponent from "../components/Grafico";import PieChartComponent from "../components/tarta";
+import { MagicMotion } from "react-magic-motion";
+
+import PieChartComponent from "../components/tarta";
 import BarChartComponent from "../components/Barras";
 import {
   fetchCervezasPorPaises,
@@ -40,9 +41,12 @@ export default async function Home() {
   const numTipos=tipos1[0].TABLE_ROWS;
   const numCervezas=cervezas[0].TABLE_ROWS;
   const numGraduaciones=graduaciones[0].TABLE_ROWS;
-    
+  
   return (
-    <>
+    
+      
+      <>
+
       <h1 className="text-2xl font-bold p-4 text-center">Estadisticas</h1>
       <div className="w-11/12 grid grid-cols-4 gap-4 mx-auto">
         <article className="bg-red-500 rounded-lg shadow-lg p-4">
@@ -67,6 +71,8 @@ export default async function Home() {
         <PieChartComponent data={tipos} title="Cervezas por tipos" />
         <BarChartComponent data={BD} />
       </div>
-    </>
+      </>
+      
+    
   );
 }

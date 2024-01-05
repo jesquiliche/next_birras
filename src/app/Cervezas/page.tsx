@@ -21,8 +21,15 @@ import {
 import CervezasTable from "@/components/CervezasTable";
 
 import Link from "next/link";
+import Cards from "@/components/Cards";
 
 const Page = () => {
+  //Paginación
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalRecords, setTotalRecords]=useState(0);
+
   const [loading, setLoading] = useState(false);
   const [cervezas, setCervezas] = useState<Cerveza[]>([]);
   const [tipos, setTipos] = useState<Tipo[]>([]);
@@ -36,7 +43,104 @@ const Page = () => {
     graduacion: "",
   });
 
- 
+  const RenderPagination: React.FC = () => {
+    // Define el valor máximo de botones de página a mostrar (en este caso, x)
+    let x: number = 10;
+    if (totalPages > 10) {
+      x = 10;
+    } else {
+      x = totalPages;
+    }
+  
+    const pageButtons = [];
+  
+    // Genera los botones de página en el rango calculado
+    for (let i = 1; i <= x; i++) {
+      pageButtons.push(
+        <button
+          key={i}
+          className={`flex  justify-center  bg-gray-500  shadow-md text-white  hover:bg-gray-700 px-4 py-1  items-center text-center border ${
+            i === page ? 'bg-gray-600' : 'bg-gray-500'
+          }  hover:bg-gray-800`}
+          onClick={() => setPage(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+  
+    const retrocedePagina = () => {
+      if (page > 1) {
+        setPage(page - 1); // Resta 1 para retroceder de página si no estás en la primera página
+      }
+    };
+  
+    const primeraPagina = () => {
+      if (page > 1) {
+        setPage(1);
+      }
+    };
+  
+    const ultimaPagina = () => {
+      if (page < totalPages) {
+        setPage(totalPages);
+      }
+    };
+  
+    const avanzaPagina = () => {
+      if (page < totalPages) {
+        setPage(page + 1); // Suma 1 para avanzar de página si no estás en la última página
+      }
+    };
+    return (
+      <>
+        <h4 className="text-center font-semibold">
+          <p>Resultados : {totalRecords}</p>
+            Página : {page} de {totalPages} 
+        </h4>
+        <div className="flex flex-col items-center mb-2">
+          <div className="inline-flex mt-2">
+            {/* Oculta los botones "<<" y "<" si estás en la primera página */}
+            {page > 1 && (
+              <>
+                <button
+                  className="btn-page"
+                   onClick={primeraPagina}
+                >
+                  {"<<"}
+                </button>
+                <button
+                  className="btn-page"
+                 onClick={retrocedePagina}
+                >
+                  {"<"}
+                </button>
+              </>
+            )}
+            {pageButtons}
+            {/* Oculta los botones ">>" y ">" si estás en la última página */}
+            {page < totalPages && (
+              <>
+                <button
+                   onClick={avanzaPagina}
+                  className="btn-page"
+                >
+                  {">"}
+                </button>
+                <button
+                   onClick={ultimaPagina}
+                  className="btn-page"
+                >
+                  {">>"}
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      </>
+    );
+      };
+
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -48,7 +152,7 @@ const Page = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Aquí puedes construir el query string con los valores de formData
-    const queryString = `tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&graduacion_id=${formData.graduacion}`;
+    const queryString = `page=${page}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&graduacion_id=${formData.graduacion}`;
 
     setLoading(true);
     setCervezas(await fetchCervezasQuery(queryString));
@@ -63,7 +167,11 @@ const Page = () => {
       try {
         const cervezasData = await fetchCervezas();
 
-        setCervezas(cervezasData);
+        setCervezas(cervezasData.data);
+        console.log("Paginas ");
+        console.log(cervezasData.last_page);
+        setTotalPages(cervezasData.last_page);
+        setTotalRecords(cervezasData.total)
 
         const tiposData = await fetchTipos();
         setTipos(tiposData);
@@ -210,8 +318,8 @@ const Page = () => {
         </form>)}
 
         <h1 className="text-2xl font-bold text-center">Lista</h1>
-
-        {loading ? <Load /> : <CervezasTable cervezas={cervezas} />}
+                <RenderPagination/>
+        {loading ? <Load /> : <Cards cervezas={cervezas} setCervezas={setCervezas} />}
       </div>{" "}
     </div>
     </>

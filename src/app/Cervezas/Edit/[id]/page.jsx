@@ -1,7 +1,5 @@
 "use client";
-import React, { useState, useEffect, ChangeEvent } from "react";
-import { Tipo, Pais, Color, Graduacion } from "@/interfaces/interfaces";
-import { useSession, signOut } from "next-auth/react";
+import React, { useState, useEffect } from "react";
 import {
   fetchTipos,
   fetchPaises,
@@ -11,37 +9,20 @@ import {
 } from "@/services/api";
 import DisplayErrors from "@/components/DisplayErrors";
 import Load from "@/components/Load";
+import { useSession } from "next-auth/react";
 
-interface CervezaData {
-  nombre: string;
-  descripcion: string;
-  color_id: number;
-  graduacion_id: number;
-  tipo_id: number;
-  pais_id: number;
-  novedad: boolean | number;
-  oferta: boolean | number;
-  precio: number;
-  foto: string;
-  marca: string;
-}
 
-interface File extends Blob {
-  readonly lastModified: number;
-  readonly name: string;
-}
-export default async function Edit({ params }: { params: { id: string } }) {
+const Edit = ({ params }) => {
   const id = params.id;
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
   const [ok, setOK] = useState("");
-  const [errors, setErrors] = useState<any>(null);
-  const { data: session, status } = useSession();
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [tipos, setTipos] = useState<Tipo[]>([]);
-  const [paises, setPaises] = useState<Pais[]>([]);
-  const [colores, setColores] = useState<Color[]>([]);
-  const [graduaciones, setGraduaciones] = useState<Graduacion[]>([]);
-  const [cerveza, setCerveza] = useState<CervezaData>({
+  const [errors, setErrors] = useState(null);
+  const [tipos, setTipos] = useState([]);
+  const [paises, setPaises] = useState([]);
+  const [colores, setColores] = useState([]);
+  const [graduaciones, setGraduaciones] = useState([]);
+  const [cerveza, setCerveza] = useState({
     nombre: "",
     descripcion: "",
     color_id: 0,
@@ -53,7 +34,6 @@ export default async function Edit({ params }: { params: { id: string } }) {
     precio: 0,
     foto: "",
     marca: "",
-  
   });
 
   useEffect(() => {
@@ -78,34 +58,71 @@ export default async function Edit({ params }: { params: { id: string } }) {
       }
     };
 
-   fetchData();
-  
-  }, []);
+    fetchData();
+  }, [id]);
 
-  const handleOnChange = (
-    e: React.ChangeEvent<
-      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
-    >
-  ) => {
-  
-   try {
-    
-     console.log(e.target.value)
-    /*  setCerveza({
+  const handleOnChange = (e) => {
+    if (e.target.type === "checkbox") {
+      const isChecked = e.checked;
+      const { name, value } = e.target;
+      const check = isChecked;
+
+      setCerveza({
         ...cerveza,
-        [e.target.name]: e.target.value,
-      })*/
-    } catch(error) {
-      alert(error)
+        [name]: check,
+      });
+    } else if (e.target.type === "number" || e.target.type === "select-one") {
+      const { name, value } = e.target;
+      setCerveza({
+        ...cerveza,
+        [name]: +value,
+      });
+    } else {
+      const { name, value } = e.target;
+      setCerveza({
+        ...cerveza,
+        [name]: value,
+      });
     }
-      
-    
   };
 
- 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(cerveza);
+    setLoading(true);
+    setErrors(null);
+    setOK("");
+    const token = session?.authorization.token || "";
+    const apiUrl =
+      process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
+
+    try {
+      const response = await fetch(`${apiUrl}cervezas/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cerveza),
+      });
+
+      // Manejar la respuesta
+      if (response.ok) {
+        const data = await response.json();
+        setOK("Producto " + data.nombre + " guardado correctamente.");
+      } else {
+        const errores = await response.json();
+        setErrors(errores);
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      alert(
+        "No se pudo conectar con el servidor. Puede que la sesión halla expirado."
+      );
+      console.error("Error en la solicitud:");
+    }
   };
 
   return (
@@ -113,17 +130,17 @@ export default async function Edit({ params }: { params: { id: string } }) {
       <h1 className="text-2xl font-bold text-center">Editar producto</h1>
       <div className="w-11/12 mx-auto border-2 rounded-lg shadow-lg py-2">
         <form
-        
+          onSubmit={handleSubmit}
           className="grid grid-cols-3 w-11/12 mx-auto"
-        >  
-        <div className="p-2 col-span-1">
-        <img
-          className="rounded-lg h-80 mt-2"
-          id="image-preview"
-          src={cerveza.foto}
-          alt="Vista previa de la imagen"
-        />
-      </div>
+        >
+          <div className="p-2 col-span-1">
+            <img
+              className="rounded-lg h-80 mt-2"
+              id="image-preview"
+              src={cerveza.foto}
+              alt="Vista previa de la imagen"
+            />
+          </div>
           <div className="p-2 col-span-2">
             <label className="block w-full">Nombre:</label>
             <input
@@ -134,11 +151,10 @@ export default async function Edit({ params }: { params: { id: string } }) {
               maxLength={150}
               value={cerveza.nombre}
               onChange={handleOnChange}
-            
               required
             ></input>
-             <label className=" ">Descripción:</label>
-              <textarea
+            <label className=" ">Descripción:</label>
+            <textarea
               className="form-control row-span-4 h-64"
               id="descipcion"
               name="descripcion"
@@ -146,13 +162,9 @@ export default async function Edit({ params }: { params: { id: string } }) {
               onChange={handleOnChange}
               required
             ></textarea>
-
           </div>
-
           <div className="w-full p-2">
-            <label  className="block text-gray-700">
-              Tipo:
-            </label>
+            <label className="block text-gray-700">Tipo:</label>
             <select
               name="tipo_id"
               id="tipo_id"
@@ -162,17 +174,18 @@ export default async function Edit({ params }: { params: { id: string } }) {
               required
             >
               {tipos.map((t) => (
-                <option key={t.id} selected={t.id == cerveza.tipo_id}>
+                <option
+                  key={t.id}
+                  value={t.id}
+                  selected={t.id == cerveza.tipo_id}
+                >
                   {t.nombre}
                 </option>
               ))}
             </select>
           </div>
-
           <div className="w-full p-2">
-            <label className="block text-gray-700">
-              País:
-            </label>
+            <label className="block text-gray-700">País:</label>
             <select
               name="pais_id"
               id="pais_id"
@@ -185,18 +198,15 @@ export default async function Edit({ params }: { params: { id: string } }) {
                 <option
                   key={p.id}
                   value={p.id}
-                  selected={p.id == cerveza.pais_id}
+                  selected={p.id === cerveza.pais_id}
                 >
                   {p.nombre}
                 </option>
               ))}
             </select>
           </div>
-
           <div className="w-full p-2">
-            <label  className="block text-gray-700">
-              Color:
-            </label>
+            <label className="block text-gray-700">Color:</label>
             <select
               name="color_id"
               id="color_id"
@@ -209,18 +219,15 @@ export default async function Edit({ params }: { params: { id: string } }) {
                 <option
                   key={c.id}
                   value={c.id}
-                  selected={c.id == cerveza.color_id}
+                  selected={c.id === cerveza.color_id}
                 >
                   {c.nombre}
                 </option>
               ))}
             </select>
           </div>
-
           <div className="w-full p-2">
-            <label className="block text-gray-700">
-              Graduación:
-            </label>
+            <label className="block text-gray-700">Graduación:</label>
             <select
               name="graduacion_id"
               id="graduacion_id"
@@ -233,7 +240,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
                 <option
                   key={g.id}
                   value={g.id}
-                  selected={g.id == cerveza.graduacion_id}
+                  selected={g.id === cerveza.graduacion_id}
                 >
                   {g.nombre}
                 </option>
@@ -265,30 +272,7 @@ export default async function Edit({ params }: { params: { id: string } }) {
               required
             ></input>
           </div>
-
-        {/*  <div className="flex p-2 items-center">
-            <input
-              type="checkbox"
-              onChange={handleOnChange}
-              id="novedad"
-              name="novedad"
-              value={0}
-              className="p-2 border rounded bg-gray-100"
-            />
-            <label className="ml-4 flex">Novedad</label>
-            <input
-              type="checkbox"
-              id="oferta"
-              name="oferta"
-              onChange={handleOnChange}
-              value={0}
-              className="ml-4 p-2 border rounded bg-gray-100"
-            />
-            <label className="ml-4 flex">Oferta</label>
-          </div>*/}
-        
           {loading && <Load />}
-          
           <div className="w-full p-2 col-span-3">
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
@@ -303,4 +287,6 @@ export default async function Edit({ params }: { params: { id: string } }) {
       </div>
     </>
   );
-}
+};
+
+export default Edit;

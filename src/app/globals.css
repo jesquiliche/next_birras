@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 .form-control{
-    @apply w-full  p-2 border rounded bg-gray-300
+    @apply w-full  p-2 border rounded bg-gray-200
 }
 
+.btn-page {
+    @apply bg-gray-500  shadow-md text-white  hover:bg-gray-700 px-4 py-1  items-center text-center border
+
+}
