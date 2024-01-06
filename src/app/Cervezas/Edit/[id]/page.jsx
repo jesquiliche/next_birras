@@ -36,6 +36,9 @@ const Edit = ({ params }) => {
     marca: "",
   });
 
+  if(session.status=="loading"){
+    return(<p>Cargando</p>)
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
