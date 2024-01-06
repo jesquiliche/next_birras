@@ -95,6 +95,7 @@ const Edit = ({ params }) => {
     setErrors(null);
     setOK("");
     const token = session?.authorization.token || "";
+    console.log(token);
     const apiUrl =
       process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
 
@@ -128,7 +129,7 @@ const Edit = ({ params }) => {
   };
 
   return (
-    <>
+    <>Prueba
       <h1 className="text-2xl font-bold text-center">Editar producto</h1>
       <div className="w-11/12 mx-auto border-2 rounded-lg shadow-lg py-2">
         <form
