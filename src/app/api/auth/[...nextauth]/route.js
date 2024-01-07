@@ -30,14 +30,14 @@ const handler = NextAuth({
             }),
             headers: { "Content-Type": "application/json" },
           });
-
-          if (res.status === 401) {
+ 
+          if (res.status!=200) {
             
             throw new Error("Credenciales no válidas");
           }
 
           const data = await res.json();
-
+       
           return {
             user: data.user,
             authorization: data.authorization,
