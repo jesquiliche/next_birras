@@ -153,9 +153,7 @@ export async function fetchCervezasQuery(query: string) {
 export async function fetchPaises(): Promise<Pais[]> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
   try {
-    const response = await fetch(`${apiUrl}paises`, {
-      method: "GET",
-    });
+    const response = await fetch(`${apiUrl}paises`,{cache: "no-store"});
 
     if (!response.ok) {
       throw new Error("No se pudieron obtener los datos de la API");
@@ -194,9 +192,7 @@ export async function fetchTipos(): Promise<Tipo[]> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
 
   try {
-    const response = await fetch(`${apiUrl}tipos`, {
-      method: "GET",
-    });
+    const response = await fetch(`${apiUrl}tipos`, { cache: "no-store" });
 
     if (!response.ok) {
       throw new Error("No se pudieron obtener los datos de la API");

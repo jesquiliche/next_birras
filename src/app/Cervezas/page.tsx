@@ -43,6 +43,9 @@ const Page = () => {
     pais: "",
     color: "",
     graduacion: "",
+    nombre:"",
+    oferta: -1,
+    novedad:-1
   });
 
   const RenderPagination: React.FC = () => {
@@ -131,12 +134,44 @@ const Page = () => {
     );
   };
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+    
+    switch (name) {
+      case 'oferta':
+        console.log("Oferta 1")
+        let valor:number=0;
+        
+          valor=+value;
+          console.log("Oferta",valor);
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: valor,
+          }));
+        
+       
+      
+        break;
+      case 'novedad':
+        let valor1:number=0;
+        
+          valor1=+value;
+          console.log("Novedad",valor1);
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: valor1,
+          }));
+        
+
+        break;
+          default:
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              [name]: value,
+            }));
+    }
+    
+    console.log(formData);
   };
 
   const CervezasQuery = async (queryString: string) => {
@@ -151,8 +186,15 @@ const Page = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&nombre=${nombre}&graduacion_id=${formData.graduacion}`;
-
+    let queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&nombre=${formData.nombre}&graduacion_id=${formData.graduacion}`;
+    console.log(queryString);
+    if(formData.oferta!=-1){
+      queryString+=`&oferta=${formData.oferta}`
+    }
+    if(formData.novedad!=-1){
+      queryString+=`&novedad=${formData.novedad}`
+    }
+    console.log(queryString)
     await CervezasQuery(queryString);
     // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
   };
@@ -197,17 +239,17 @@ const Page = () => {
   }, [page]);
 
   return (
-    <>
-      <div>
-        <h1 className="text-2xl font-bold text-center">Cervezas</h1>
-        <div className="w-11/12 mx-auto border-2 p-4 rounded-lg shadow-lg">
-          <h1 className="text-2xl font-bold text-center">Filtro</h1>
+    <div>
+      <h1 className="text-2xl font-bold text-center">Cervezas</h1>
+      <div className="w-11/12 mx-auto border-2 p-4 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold text-center">Filtro</h1>
 
-          {loading ? (
-            <Load />
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-wrap">
-              <div className="w-full md:w-1/4 p-2">
+        {loading ? (
+          <Load />
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-wrap">
+            <div className="grid grid-cols-4 gap-4">
+                <div>
                 <label htmlFor="tipo" className="block text-gray-700">
                   Tipo:
                 </label>
@@ -230,9 +272,10 @@ const Page = () => {
                     </option>
                   ))}
                 </select>
-              </div>
+                </div>
+              
 
-              <div className="w-full md:w-1/4 p-2">
+              <div>
                 <label htmlFor="pais" className="block text-gray-700">
                   País:
                 </label>
@@ -256,7 +299,7 @@ const Page = () => {
                 </select>
               </div>
 
-              <div className="w-full md:w-1/4 p-2">
+              <div>
                 <label htmlFor="color" className="block text-gray-700">
                   Color:
                 </label>
@@ -280,7 +323,7 @@ const Page = () => {
                 </select>
               </div>
 
-              <div className="w-full md:w-1/4 p-2">
+              <div>
                 <label htmlFor="graduacion" className="block text-gray-700">
                   Graduación:
                 </label>
@@ -303,36 +346,74 @@ const Page = () => {
                   ))}
                 </select>
               </div>
-        
 
-              <div className="flex items-center p-2">
-                <button
-                  type="submit"
-                  className="btn-primary"
-                >
-                  Filtrar
-                </button>
-                <Link
-                  href="/Cervezas/add/"
-                  className="btn-primary"
-                >
-                  Añadir
-                </Link>
+              <div>
+                <label htmlFor="nombre" className="block text-gray-700">
+                  Nombre:
+                </label>
+                <input
+                  type="text"
+                  name="nombre"
+                  id="nombre"
+                  onChange={handleOnChange}
+                  className="form-control"
+                />
               </div>
-            </form>
-          )}
+              <div>
+                <label htmlFor="oferta" className="block text-gray-700">
+                  Oferta:
+                </label>
+                <select
+                  name="oferta"
+                  id="oferta"
+                  onChange={handleOnChange}
+                  className="form-control"
+                >
+                  <option key="0" value="-1"></option>
 
+                  
+                  <option key="1" value="1">Si</option>
+            
+                </select>
+              </div>
+              <div>
+                <label htmlFor="Novedad" className="block text-gray-700">
+                  Novedad:
+                </label>
+                <select
+                  name="novedad"
+                  id="novedad"
+                  onChange={handleOnChange}
+                  className="form-control"
+                >
+                  <option key="0" value="-1"></option>
+
+                 
+                  <option key="1" value="1">Si</option>
+            
+                </select>
+              </div>
+
+
+            </div>
+            
          
-          <p className="text-center font-bold">Resultados : {totalRecords}</p>
-          {totalRecords>limit && (<RenderPagination />)}
-          {loading ? (
-            <Load />
-          ) : (
-            <Cards cervezas={cervezas} setCervezas={setCervezas} />
-          )}
-        </div>{" "}
+            <div className="flex items-center p-2">
+              <button type="submit" className="btn-primary">
+                Filtrar
+              </button>
+              <Link href="/Cervezas/add/" className="btn-primary">
+                Añadir
+              </Link>
+            </div>
+          </form>
+        )}
+
+        <p className="text-center font-bold">Resultados : {totalRecords}</p>
+        {totalRecords > limit && <RenderPagination />}
+        {loading ? <Load /> : <Cards cervezas={cervezas} setCervezas={setCervezas} />}
       </div>
-    </>
+    </div>
   );
 };
 
