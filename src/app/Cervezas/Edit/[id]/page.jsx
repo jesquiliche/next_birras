@@ -129,7 +129,7 @@ const Edit = ({ params }) => {
   };
 
   return (
-    <>Prueba
+    <>
       <h1 className="text-2xl font-bold text-center">Editar producto</h1>
       <div className="w-11/12 mx-auto border-2 rounded-lg shadow-lg py-2">
         <form

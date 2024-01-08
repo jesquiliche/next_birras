@@ -7,13 +7,13 @@ const handler = NextAuth({
       name: "Credentials",
       credentials: {
         email: {
-          label: "email admin@test.com",
+          label: "email: admin@test.com",
           type: "text",
           placeholder: "admin@test.com",
           value: "admin@test.com",
         },
         password: {
-          label: "Password admin_password",
+          label: "Password: admin_password",
           type: "password",
           placeholder: "admin_password",
           value:"admin_password"

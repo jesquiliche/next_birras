@@ -31,7 +31,6 @@ const Page = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [nombre, setNombre] = useState("");
 
-
   const [loading, setLoading] = useState(false);
   const [cervezas, setCervezas] = useState<Cerveza[]>([]);
   const [tipos, setTipos] = useState<Tipo[]>([]);
@@ -43,9 +42,9 @@ const Page = () => {
     pais: "",
     color: "",
     graduacion: "",
-    nombre:"",
+    nombre: "",
     oferta: -1,
-    novedad:-1
+    novedad: -1,
   });
 
   const RenderPagination: React.FC = () => {
@@ -100,7 +99,6 @@ const Page = () => {
     return (
       <>
         <h4 className="text-center font-semibold">
-          
           {totalRecords !== 0 ? `${page} de ${totalPages}` : ""}
         </h4>
         <div className="flex flex-col items-center mb-2">
@@ -134,43 +132,42 @@ const Page = () => {
     );
   };
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
-    
+
     switch (name) {
-      case 'oferta':
-        console.log("Oferta 1")
-        let valor:number=0;
-        
-          valor=+value;
-          console.log("Oferta",valor);
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: valor,
-          }));
-        
-       
-      
-        break;
-      case 'novedad':
-        let valor1:number=0;
-        
-          valor1=+value;
-          console.log("Novedad",valor1);
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: valor1,
-          }));
-        
+      case "oferta":
+        console.log("Oferta 1");
+        let valor: number = 0;
+
+        valor = +value;
+        console.log("Oferta", valor);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: valor,
+        }));
 
         break;
-          default:
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              [name]: value,
-            }));
+      case "novedad":
+        let valor1: number = 0;
+
+        valor1 = +value;
+        console.log("Novedad", valor1);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: valor1,
+        }));
+
+        break;
+      default:
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          [name]: value,
+        }));
     }
-    
+
     console.log(formData);
   };
 
@@ -188,13 +185,13 @@ const Page = () => {
     e.preventDefault();
     let queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&nombre=${formData.nombre}&graduacion_id=${formData.graduacion}`;
     console.log(queryString);
-    if(formData.oferta!=-1){
-      queryString+=`&oferta=${formData.oferta}`
+    if (formData.oferta != -1) {
+      queryString += `&oferta=${formData.oferta}`;
     }
-    if(formData.novedad!=-1){
-      queryString+=`&novedad=${formData.novedad}`
+    if (formData.novedad != -1) {
+      queryString += `&novedad=${formData.novedad}`;
     }
-    console.log(queryString)
+    console.log(queryString);
     await CervezasQuery(queryString);
     // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
   };
@@ -249,7 +246,7 @@ const Page = () => {
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-wrap">
             <div className="grid grid-cols-4 gap-4">
-                <div>
+              <div>
                 <label htmlFor="tipo" className="block text-gray-700">
                   Tipo:
                 </label>
@@ -272,8 +269,7 @@ const Page = () => {
                     </option>
                   ))}
                 </select>
-                </div>
-              
+              </div>
 
               <div>
                 <label htmlFor="pais" className="block text-gray-700">
@@ -371,9 +367,9 @@ const Page = () => {
                 >
                   <option key="0" value="-1"></option>
 
-                  
-                  <option key="1" value="1">Si</option>
-            
+                  <option key="1" value="1">
+                    Si
+                  </option>
                 </select>
               </div>
               <div>
@@ -388,16 +384,12 @@ const Page = () => {
                 >
                   <option key="0" value="-1"></option>
 
-                 
-                  <option key="1" value="1">Si</option>
-            
+                  <option key="1" value="1">
+                    Si
+                  </option>
                 </select>
               </div>
-
-
             </div>
-            
-         
             <div className="flex items-center p-2">
               <button type="submit" className="btn-primary">
                 Filtrar
@@ -411,7 +403,11 @@ const Page = () => {
 
         <p className="text-center font-bold">Resultados : {totalRecords}</p>
         {totalRecords > limit && <RenderPagination />}
-        {loading ? <Load /> : <Cards cervezas={cervezas} setCervezas={setCervezas} />}
+        {loading ? (
+          <Load />
+        ) : (
+          <Cards cervezas={cervezas} setCervezas={setCervezas} />
+        )}
       </div>
     </div>
   );

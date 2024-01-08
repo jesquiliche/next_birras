@@ -207,6 +207,27 @@ export async function fetchTipos(): Promise<Tipo[]> {
   }
 }
 
+export async function fetchTiposById(id:string): Promise<Tipo | undefined> {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
+
+
+  try {
+    const response = await fetch(`${apiUrl}tipos/${id}`, { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("No se pudieron obtener los datos de la API");
+    }
+
+    const data = await response.json();
+    return data.Tipo;
+
+    // Aquí puedes trabajar con los datos obtenidos de la API
+  } catch (error) {
+    console.log(error);
+    return ; // Debes devolver un valor adecuado en caso de error
+  }
+}
+
 export async function fetchGraduaciones(): Promise<Graduacion[]> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
   try {

@@ -1,5 +1,6 @@
 import { fetchTipos } from "@/services/api"
 import { Tipo } from "@/interfaces/interfaces"
+import Link from "next/link";
 
 
 const page = async() => {
@@ -18,6 +19,9 @@ const page = async() => {
         <th >
           Nombre
         </th>
+        <th >
+          Descripción
+        </th>
         <th className="w-10">
           Editar
         </th>
@@ -34,9 +38,13 @@ const page = async() => {
           <td className="p-2">
           {t.nombre}
           </td>
+          <td className="p-2">
+          {t.descripcion}
+          </td>
           <td className="p-4">
-          <a className="bg-yellow-500 text-white rounded-lg px-4 py-1"> 
-          Editar</a>
+          <Link href={`/Tipos/Edit/${t.id}`} className="btn-primary"> 
+          Editar
+          </Link>
           </td>
           <td>
           <a className="bg-red-600 text-white rounded-lg px-4 py-1"> 
