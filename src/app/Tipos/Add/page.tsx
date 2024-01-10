@@ -1,15 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { fetchTiposById } from "@/services/api";
 import Load from "@/components/Load";
-import { useSession, status } from "next-auth/react";
+import DisplayErrors from "@/components/DisplayErrors";
+import { useSession } from "next-auth/react";
 
-const Edit = ({ params }) => {
-  const id = params.id;
+interface Tipo {
+  nombre: string;
+  descripcion?: string;
+}
+
+const Add: React.FC = () => {
   const { data: session, status } = useSession();
-  const [tipo, setTipo] = useState({});
-  const [ok,setOK]=useState("");
-  
+  const [tipo, setTipo] = useState<Tipo>({ nombre: "" });
+  const [ok, setOK] = useState<string>("");
+  const [errors, setErrors] = useState<any>(null);
 
   if (status == "loading") {
     return (
@@ -18,32 +22,28 @@ const Edit = ({ params }) => {
       </p>
     );
   }
-  useEffect(() => {
-    const fetchData = async () => {
-      setTipo(await fetchTiposById(id));
-      console.log(tipo);
-    };
 
-    fetchData();
-  }, []);
-
-  const handleOnChange = (e) => {
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setTipo({
       ...tipo,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setErrors(null);
+    setOK("");
     const token = session?.authorization.token || "";
-   
+
     const apiUrl =
       process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
 
     try {
-      const response = await fetch(`${apiUrl}tipos/${id}`, {
-        method: "PUT",
+      const response = await fetch(`${apiUrl}tipos`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -51,26 +51,24 @@ const Edit = ({ params }) => {
         body: JSON.stringify(tipo),
       });
 
-      // Manejar la respuesta
-      if(response.ok) {
-        setOK("Solicitud envidada con éxito.")
+      if (response.ok) {
+        setOK("Solicitud enviada con éxito.");
       } else {
-        alert(response.status);
+        const errores = await response.json();
+        setErrors(errores);
       }
-    
-    
     } catch (error) {
       alert(
-        "No se pudo conectar con el servidor. Puede que la sesión halla expirado."
+        "No se pudo conectar con el servidor. Puede que la sesión haya expirado."
       );
-      console.error("Error en la solicitud:");
+      console.error("Error en la solicitud:", error);
     }
   };
 
   return (
     <>
       <div className="w-11/12 mx-auto mt-2 border-2 rounded-lg shadow-lg">
-        <h1 className="text-xl5 text-center ">Tipo {id}</h1>
+        <h1 className="text-xl5 text-center ">Tipo</h1>
         <form onSubmit={handleSubmit} className="w-4/5 mx-auto p-4">
           <div>
             <label htmlFor="nombre">Nombre:</label>
@@ -93,16 +91,16 @@ const Edit = ({ params }) => {
               id="descripcion"
               name="descripcion"
               onChange={handleOnChange}
-              value={tipo.descripcion}
+              value={tipo.descripcion || ""}
             ></textarea>
           </div>
-        
-          <div className="mt-3">
-            
-            {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
 
-            <button type="submit" className="btn-primary">
-              Actualizar
+          <div className="mt-3">
+            {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
+            {errors && <DisplayErrors errors={errors} />}
+
+            <button type="submit" className="btn-primary mt-2">
+              Añadir
             </button>
           </div>
         </form>
@@ -111,4 +109,4 @@ const Edit = ({ params }) => {
   );
 };
 
-export default Edit;
+export default Add;
