@@ -199,7 +199,7 @@ export async function fetchTipos(): Promise<Tipo[]> {
     }
 
     const data = await response.json();
-    return data;
+    return data.data;
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {
     console.log(error);
