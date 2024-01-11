@@ -35,11 +35,11 @@ const page = async() => {
           {t.nombre}
           </td>
           <td className="p-4">
-          <a className="bg-yellow-500 text-white rounded-lg px-4 py-1"> 
+          <a className="btn-primary"> 
           Editar</a>
           </td>
           <td>
-          <a className="bg-red-600 text-white rounded-lg px-4 py-1"> 
+          <a className="btn-primary"> 
           Borrar</a>
           </td>
         </tr>

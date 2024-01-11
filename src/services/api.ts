@@ -160,7 +160,7 @@ export async function fetchPaises(): Promise<Pais[]> {
     }
 
     const data = await response.json();
-    return data;
+    return data.data;
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {
     console.error("Error al obtener datos:", error);
@@ -310,7 +310,7 @@ export async function fetchDeleteCervezasById(id: string, token: string) {
 
     const data = await response.json();
 
-    return data;
+    return data.data;
   } catch (error) {
     console.error(error);
   }
