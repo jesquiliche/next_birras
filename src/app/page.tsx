@@ -1,6 +1,6 @@
 
-import { MagicMotion } from "react-magic-motion";
 
+import CardBase from "../components/CardBase";
 import PieChartComponent from "../components/tarta";
 import BarChartComponent from "../components/Barras";
 import {
@@ -48,6 +48,7 @@ export default async function Home() {
       <>
 
       <h1 className="text-2xl font-bold p-4 text-center">Estadisticas</h1>
+      <CardBase/>
       <div className="w-11/12 grid grid-cols-4 gap-4 mx-auto">
         <article className="bg-red-500 rounded-lg shadow-lg p-4">
           <h1 className="text-xl text-white text-center">Cervezas</h1>
