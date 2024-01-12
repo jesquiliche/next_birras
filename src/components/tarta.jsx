@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { PieChart, Pie, Tooltip, Cell } from 'recharts';
+import { PieChart, Pie, Tooltip, Cell,Label } from 'recharts';
 
 const PieChartComponent = ({ data, title }) => {
   // Definir colores para cada sección
@@ -12,7 +12,9 @@ const PieChartComponent = ({ data, title }) => {
       <PieChart width={350} height={200}>
         <Pie data={data} dataKey="value" cx={175} cy={100} outerRadius={80} fill="#8884d8" label>
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+            <Cell key={`cell-${index}`} fill={colors[index % colors.length]} >
+              <Label value={entry.text} position="center" />
+            </Cell>
           ))}
         </Pie>
         <Tooltip formatter={(value, name) => [value, name]} />
