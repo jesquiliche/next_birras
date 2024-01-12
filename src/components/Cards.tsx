@@ -37,6 +37,7 @@ const Cards = ({ cervezas, setCervezas }: Props) => {
 
   return (
     <>
+    <MagicMotion>
       <div className="grid grid-cols-3 gap-4 ">
         {cervezas.map((cerveza) => (
           <div
@@ -92,6 +93,7 @@ const Cards = ({ cervezas, setCervezas }: Props) => {
           </div>
         ))}
       </div>
+      </MagicMotion>
     </>
   );
 };

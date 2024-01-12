@@ -1,6 +1,8 @@
 import CardBase from "../components/CardBase";
 import PieChartComponent from "../components/tarta";
 import BarChartComponent from "../components/Barras";
+import DonutChartComponent from "../components/DonutChart";
+
 import {
   fetchCervezasPorPaises,
   fetchCervezasPorTipos,
@@ -49,7 +51,9 @@ export default async function Home() {
       </div>
       <div className="grid grid-cols-2">
         <PieChartComponent data={data} title="Cervezas por países" />
-        <PieChartComponent data={tipos} title="Cervezas por tipos" />
+
+        <DonutChartComponent data={tipos} title="Cervezas por tipos" />
+
         <BarChartComponent data={BD} />
       </div>
     </>

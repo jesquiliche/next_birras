@@ -6,11 +6,11 @@ import {
   fetchColores,
   fetchGraduaciones,
   fetchCervezasById,
+  fetchDeleteTiposById,
 } from "@/services/api";
 import DisplayErrors from "@/components/DisplayErrors";
 import Load from "@/components/Load";
 import { useSession } from "next-auth/react";
-
 
 const Edit = ({ params }) => {
   const id = params.id;
@@ -36,9 +36,12 @@ const Edit = ({ params }) => {
     marca: "",
   });
 
-  if(session.status=="loading"){
-    return(<p>Cargando</p>)
+  if (session.status == "loading") {
+    return <p>Cargando</p>;
   }
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,13 +69,13 @@ const Edit = ({ params }) => {
 
   const handleOnChange = (e) => {
     if (e.target.type === "checkbox") {
-    const { name, checked } = e.target;
-    const valor = checked ? 1 : 0;
-    
-    setCerveza({
-      ...cerveza,
-      [name]: valor,
-    });
+      const { name, checked } = e.target;
+      const valor = checked ? 1 : 0;
+
+      setCerveza({
+        ...cerveza,
+        [name]: valor,
+      });
     } else if (e.target.type === "number" || e.target.type === "select-one") {
       const { name, value } = e.target;
       setCerveza({
@@ -281,7 +284,7 @@ const Edit = ({ params }) => {
               onChange={handleOnChange}
               id="novedad"
               name="novedad"
-              checked={cerveza.novedad!=0}
+              checked={cerveza.novedad != 0}
               className="p-2 border rounded bg-gray-100"
             />
             <label className="ml-4 flex">Novedad</label>
@@ -289,7 +292,7 @@ const Edit = ({ params }) => {
               type="checkbox"
               id="oferta"
               name="oferta"
-              checked={cerveza.oferta!=0}
+              checked={cerveza.oferta != 0}
               onChange={handleOnChange}
               value={0}
               className="ml-4 p-2 border rounded bg-gray-100"
@@ -301,12 +304,10 @@ const Edit = ({ params }) => {
           <div className="w-full p-2 col-span-3 mt-2">
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
-            <button
-              type="submit"
-              className="btn-primary mt-2"
-            >
+            <button type="submit" className="btn-primary mt-2">
               Guardar
             </button>
+           
           </div>
         </form>
       </div>

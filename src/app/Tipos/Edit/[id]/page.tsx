@@ -1,8 +1,8 @@
-'use client'
+"use client";
 import React, { useState, useEffect } from "react";
-import { fetchTiposById } from "@/services/api";
+import { fetchTiposById, fetchDeleteTiposById } from "@/services/api";
 import Load from "@/components/Load";
-import { useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 interface Tipo {
   nombre?: string;
@@ -18,7 +18,7 @@ interface EditProps {
 const Edit: React.FC<EditProps> = ({ params }) => {
   const id = params.id;
   const { data: session, status: sessionStatus } = useSession();
-  const [tipo, setTipo] = useState<any >({});
+  const [tipo, setTipo] = useState<any>({});
   const [ok, setOK] = useState<string>("");
 
   if (sessionStatus == "loading") {
@@ -37,7 +37,14 @@ const Edit: React.FC<EditProps> = ({ params }) => {
     fetchData();
   }, [id]);
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const borrarTipo = async (id: string) => {
+    const token = session?.authorization.token || "";
+    await fetchDeleteTiposById(id, token);
+  };
+
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setTipo({
       ...tipo,
       [e.target.name]: e.target.value,
@@ -48,7 +55,8 @@ const Edit: React.FC<EditProps> = ({ params }) => {
     e.preventDefault();
     const token = session?.authorization.token || "";
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
+    const apiUrl =
+      process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
 
     try {
       const response = await fetch(`${apiUrl}tipos/${id}`, {
@@ -67,7 +75,9 @@ const Edit: React.FC<EditProps> = ({ params }) => {
         alert(response.status);
       }
     } catch (error) {
-      alert("No se pudo conectar con el servidor. Puede que la sesión haya expirado.");
+      alert(
+        "No se pudo conectar con el servidor. Puede que la sesión haya expirado."
+      );
       console.error("Error en la solicitud:", error);
     }
   };
@@ -102,11 +112,16 @@ const Edit: React.FC<EditProps> = ({ params }) => {
             ></textarea>
           </div>
 
-          <div className="mt-3">
+          <div className="flex items-centert mt-3">
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
 
             <button type="submit" className="btn-primary mt-2">
               Actualizar
+            </button>
+            <button type="button"
+              className="btn-primary mt-2"
+              onClick={() => borrarTipo(id)}            >
+              Borrar
             </button>
           </div>
         </form>

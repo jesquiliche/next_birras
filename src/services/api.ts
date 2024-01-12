@@ -315,28 +315,30 @@ export async function fetchDeleteCervezasById(id: string, token: string) {
     console.error(error);
   }
 }
-  export async function fetchDeleteTiposById(id: string, token: string) {
+export async function fetchDeleteTiposById(id: string, token: string) {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
+  
+
+  try {
+    const response = await fetch(`${apiUrl}tipos/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {     ;
     const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/";
-  
-    try {
-      const response = await fetch(`${apiUrl}tipos/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        cache: "no-store",
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error al eliminar la cerveza con ID ${id}`);
-      }
-  
-      const data = await response.json();
-  
-      return data;
-    } catch (error) {
-      console.error(error);
+      const data=await response.json();
+      console.log(data);
+      console.log(`${apiUrl}tipos/${id}`);
+      console.log(response.status);
+      console.log(response.statusText);
+      throw new Error(`Error al eliminar el tipo con ID ${id}`);
     }
-  
+
+    // Lógica adicional después de una eliminación exitosa, si es necesario
+  } catch (error) {
+    console.error(error);
+  }
 }
