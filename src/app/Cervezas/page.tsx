@@ -29,8 +29,8 @@ const Page = () => {
   const [limit, setLimit] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [nombre, setNombre] = useState("");
-
+  
+  const [actualizaPaginas,setActualizaPaginas]=useState<boolean>(false)
   const [loading, setLoading] = useState(false);
   const [cervezas, setCervezas] = useState<Cerveza[]>([]);
   const [tipos, setTipos] = useState<Tipo[]>([]);
@@ -139,7 +139,6 @@ const Page = () => {
 
     switch (name) {
       case "oferta":
-        console.log("Oferta 1");
         let valor: number = 0;
 
         valor = +value;
@@ -184,14 +183,13 @@ const Page = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&nombre=${formData.nombre}&graduacion_id=${formData.graduacion}`;
-    console.log(queryString);
     if (formData.oferta != -1) {
       queryString += `&oferta=${formData.oferta}`;
     }
     if (formData.novedad != -1) {
       queryString += `&novedad=${formData.novedad}`;
     }
-    console.log(queryString);
+   
     await CervezasQuery(queryString);
     // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
   };
@@ -227,6 +225,19 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
+    if(actualizaPaginas){
+      const ObtenerDatos = async () => {
+        const queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&graduacion_id=${formData.graduacion}`;
+  
+        await CervezasQuery(queryString);
+      };
+      ObtenerDatos();
+      setActualizaPaginas(false);
+    }
+ 
+  }, [actualizaPaginas]);
+
+  useEffect(() => {
     const ObtenerDatos = async () => {
       const queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&graduacion_id=${formData.graduacion}`;
 
@@ -234,6 +245,7 @@ const Page = () => {
     };
     ObtenerDatos();
   }, [page]);
+
 
   return (
     <div>
@@ -406,7 +418,7 @@ const Page = () => {
         {loading ? (
           <Load />
         ) : (
-          <Cards cervezas={cervezas} setCervezas={setCervezas} />
+          <Cards cervezas={cervezas} setCervezas={setCervezas} setActualizaPaginas={setActualizaPaginas}/>
         )}
       </div>
     </div>

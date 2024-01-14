@@ -8,8 +8,10 @@ import { MagicMotion } from "react-magic-motion";
 interface Props {
   cervezas: Cerveza[];
   setCervezas: React.Dispatch<React.SetStateAction<Cerveza[]>>;
+  setActualizaPaginas: React.Dispatch<React.SetStateAction<boolean>>;
+  
 }
-const Cards = ({ cervezas, setCervezas }: Props) => {
+const Cards = ({ cervezas, setCervezas,setActualizaPaginas }: Props) => {
   const { data: session, status } = useSession();
 
   const BorrarCerveza = async (id: number) => {
@@ -30,6 +32,7 @@ const Cards = ({ cervezas, setCervezas }: Props) => {
         alert("Su sesión ha caducado");
       }
       setCervezas(cervezas.filter((e) => e.id !== id));
+      setActualizaPaginas(true);
     } catch (error) {
       alert(error);
     }
