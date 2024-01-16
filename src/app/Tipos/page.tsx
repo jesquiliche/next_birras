@@ -12,7 +12,7 @@ const page = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(9);
   const [totalPages, setTotalPages] = useState(10);
-  const [totalRecords, setTotalRecords] = useState(90);
+  const [totalRecords, setTotalRecords] = useState(10);
 
   const [actualizaPaginas, setActualizaPaginas] = useState<boolean>(false);
   const [tipos, setTipos] = useState<Tipo[] | undefined>([]);
@@ -102,8 +102,7 @@ const page = () => {
     }, [actualizaPaginas]);
 
     useEffect(() => {
-      if (actualizaPaginas) {
-        const ObtenerDatos = async () => {
+            const ObtenerDatos = async () => {
           const queryString = `page=${page}&per_page=${limit}`;
   
           await TiposQuery(queryString);
@@ -111,8 +110,8 @@ const page = () => {
         };
         ObtenerDatos();
         setActualizaPaginas(false);
-      }
-    }, [actualizaPaginas]);
+      
+    }, [page]);
 
     
 
