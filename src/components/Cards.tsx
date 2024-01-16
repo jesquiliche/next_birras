@@ -45,7 +45,7 @@ const Cards = ({ cervezas, setCervezas,setActualizaPaginas }: Props) => {
         {cervezas.map((cerveza) => (
           <div
             key={cerveza.id}
-            className=" relative border-2 shadow-lg p-2 rounded-lg flex flex-col justify-between"
+            className=" relative border-2 shadow-lg p-2 rounded-lg flex flex-col justify-between hover:bg-gray-200"
           >
             <div>
               <div className="flex justify-between items-center">

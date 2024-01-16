@@ -37,11 +37,6 @@ const Edit: React.FC<EditProps> = ({ params }) => {
     fetchData();
   }, [id]);
 
-  const borrarTipo = async (id: string) => {
-    const token = session?.authorization.token || "";
-    await fetchDeleteTiposById(id, token);
-  };
-
   const handleOnChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -117,11 +112,6 @@ const Edit: React.FC<EditProps> = ({ params }) => {
 
             <button type="submit" className="btn-primary mt-2">
               Actualizar
-            </button>
-            <button type="button"
-              className="btn-primary mt-2"
-              onClick={() => borrarTipo(id)}            >
-              Borrar
             </button>
           </div>
         </form>

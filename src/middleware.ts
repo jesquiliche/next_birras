@@ -6,5 +6,6 @@ export const config = {
   "/Colores/:path*",
   "/Paises/:path*",
   "/Graduaciones/:path*",
+  "/:path*",
 ]
 };

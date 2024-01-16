@@ -6,6 +6,8 @@ import DonutChartComponent from "../components/DonutChart";
 import {
   fetchCervezasPorPaises,
   fetchCervezasPorTipos,
+  fetchCervezasPorColores,
+  fetchCervezasPorGraduaciones,
   fetchConsultaTablas,
   fetchConsultaBD,
 } from "@/services/api";
@@ -18,6 +20,9 @@ type TableInfo = {
 export default async function Home() {
   const data = await fetchCervezasPorPaises();
   const tipos = await fetchCervezasPorTipos();
+  const coloresData = await fetchCervezasPorColores();
+  const graduacionesData = await fetchCervezasPorGraduaciones();
+  console.log(graduacionesData);
   const tablas = await fetchConsultaTablas();
   const BD = await fetchConsultaBD();
 
@@ -53,7 +58,11 @@ export default async function Home() {
         <PieChartComponent data={data} title="Cervezas por países" />
 
         <DonutChartComponent data={tipos} title="Cervezas por tipos" />
-
+        <PieChartComponent data={coloresData} title="Cervezas por colores" />
+        <PieChartComponent
+          data={graduacionesData}
+          title="Cervezas por graduaciones"
+        />
         <BarChartComponent data={BD} />
       </div>
     </>

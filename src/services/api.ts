@@ -49,6 +49,7 @@ export async function fetchCervezasPorPaises() {
     return []; // Debes devolver un valor adecuado en caso de error
   }
 }
+
 export async function fetchCervezasPorTipos() {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
 
@@ -70,6 +71,51 @@ export async function fetchCervezasPorTipos() {
     return []; // Debes devolver un valor adecuado en caso de error
   }
 }
+
+export async function fetchCervezasPorColores() {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+
+  try {
+    const response = await fetch(`${apiUrl}consultaCervezasPorColores`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("No se pudieron obtener los datos de la API");
+    }
+
+    const data = await response.json();
+
+    return data;
+    // Aquí puedes trabajar con los datos obtenidos de la API
+  } catch (error) {
+    console.error(error);
+    return []; // Debes devolver un valor adecuado en caso de error
+  }
+}
+
+export async function fetchCervezasPorGraduaciones() {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+
+  try {
+    const response = await fetch(`${apiUrl}consultaCervezasPorGraduaciones`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("No se pudieron obtener los datos de la API");
+    }
+
+    const data = await response.json();
+    console.log(data)
+    return data;
+    // Aquí puedes trabajar con los datos obtenidos de la API
+  } catch (error) {
+    console.error(error);
+    return []; // Debes devolver un valor adecuado en caso de error
+  }
+}
+
 
 export async function fetchConsultaTablas() {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
@@ -231,9 +277,9 @@ export async function fetchTiposById(id:string): Promise<Tipo | undefined> {
 export async function fetchGraduaciones(): Promise<Graduacion[]> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
   try {
-    const response = await fetch(`${apiUrl}graduaciones`, {
-      method: "GET",
-    });
+    const response = await fetch(`${apiUrl}graduaciones`, 
+       { cache: "no-store" }
+    );
 
     if (!response.ok) {
       throw new Error("No se pudieron obtener los datos de la API");
@@ -317,23 +363,18 @@ export async function fetchDeleteCervezasById(id: string, token: string) {
 }
 export async function fetchDeleteTiposById(id: string, token: string) {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
-  
-
-  try {
+    try {
     const response = await fetch(`${apiUrl}tipos/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+    
 
     if (!response.ok) {     ;
-    const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/";
+      const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/";
       const data=await response.json();
-      console.log(data);
-      console.log(`${apiUrl}tipos/${id}`);
-      console.log(response.status);
-      console.log(response.statusText);
       throw new Error(`Error al eliminar el tipo con ID ${id}`);
     }
 

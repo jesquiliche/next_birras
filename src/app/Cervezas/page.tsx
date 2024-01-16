@@ -29,8 +29,8 @@ const Page = () => {
   const [limit, setLimit] = useState(9);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
-  
-  const [actualizaPaginas,setActualizaPaginas]=useState<boolean>(false)
+
+  const [actualizaPaginas, setActualizaPaginas] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [cervezas, setCervezas] = useState<Cerveza[]>([]);
   const [tipos, setTipos] = useState<Tipo[]>([]);
@@ -142,7 +142,7 @@ const Page = () => {
         let valor: number = 0;
 
         valor = +value;
-        console.log("Oferta", valor);
+
         setFormData((prevFormData) => ({
           ...prevFormData,
           [name]: valor,
@@ -153,7 +153,7 @@ const Page = () => {
         let valor1: number = 0;
 
         valor1 = +value;
-        console.log("Novedad", valor1);
+
         setFormData((prevFormData) => ({
           ...prevFormData,
           [name]: valor1,
@@ -166,8 +166,6 @@ const Page = () => {
           [name]: value,
         }));
     }
-
-    console.log(formData);
   };
 
   const CervezasQuery = async (queryString: string) => {
@@ -189,7 +187,7 @@ const Page = () => {
     if (formData.novedad != -1) {
       queryString += `&novedad=${formData.novedad}`;
     }
-   
+
     await CervezasQuery(queryString);
     // Puedes hacer algo con el queryString, como enviarlo a un servidor o realizar otras operaciones
   };
@@ -225,16 +223,15 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    if(actualizaPaginas){
+    if (actualizaPaginas) {
       const ObtenerDatos = async () => {
         const queryString = `page=${page}&per_page=${limit}&tipo_id=${formData.tipo}&pais_id=${formData.pais}&color_id=${formData.color}&graduacion_id=${formData.graduacion}`;
-  
+
         await CervezasQuery(queryString);
       };
       ObtenerDatos();
       setActualizaPaginas(false);
     }
- 
   }, [actualizaPaginas]);
 
   useEffect(() => {
@@ -245,7 +242,6 @@ const Page = () => {
     };
     ObtenerDatos();
   }, [page]);
-
 
   return (
     <div>
@@ -418,7 +414,11 @@ const Page = () => {
         {loading ? (
           <Load />
         ) : (
-          <Cards cervezas={cervezas} setCervezas={setCervezas} setActualizaPaginas={setActualizaPaginas}/>
+          <Cards
+            cervezas={cervezas}
+            setCervezas={setCervezas}
+            setActualizaPaginas={setActualizaPaginas}
+          />
         )}
       </div>
     </div>
