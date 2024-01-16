@@ -196,6 +196,25 @@ export async function fetchCervezasQuery(query: string) {
   }
 }
 
+export async function fetchTiposQuery(query: string) {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+  try {
+    const response = await fetch(`${apiUrl}tipos?${query}`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("No se pudieron obtener los datos de la API");
+    }
+
+    const data = await response.json();
+    return data;
+
+    // Aquí puedes trabajar con los datos obtenidos de la API
+  } catch (error) {
+    return []; // Debes devolver un valor adecuado en caso de error
+  }
+}
 export async function fetchPaises(): Promise<Pais[]> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
   try {
@@ -234,7 +253,7 @@ export async function fetchColores(): Promise<Color[] | any> {
   }
 }
 
-export async function fetchTipos(): Promise<Tipo[]> {
+export async function fetchTipos() {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
 
   try {
@@ -245,7 +264,7 @@ export async function fetchTipos(): Promise<Tipo[]> {
     }
 
     const data = await response.json();
-    return data.data;
+    return data;
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {
     console.log(error);
