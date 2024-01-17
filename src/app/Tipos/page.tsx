@@ -155,7 +155,7 @@ const page = () => {
   const borrarTipo = async (id: string) => {
     const token = session?.authorization.token || "";
     await fetchDeleteTiposById(id, token);
-    setActualiza(true);
+    setActualizaPaginas(true);
   };
 
   useEffect(() => {
