@@ -202,7 +202,7 @@ export async function fetchTiposQuery(query: string) {
     const response = await fetch(`${apiUrl}tipos?${query}`, {
       cache: "no-store",
     });
-
+    console.log(`${apiUrl}tipos?${query}`)
     if (!response.ok) {
       throw new Error("No se pudieron obtener los datos de la API");
     }

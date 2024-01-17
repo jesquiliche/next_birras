@@ -203,7 +203,7 @@ const Page = () => {
         setTotalRecords(cervezasData.total);
 
         const tiposData = await fetchTipos();
-        setTipos(tiposData);
+        setTipos(tiposData.data);
 
         const paisesData = await fetchPaises();
         setPaises(paisesData);

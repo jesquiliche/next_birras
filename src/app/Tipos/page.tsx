@@ -11,7 +11,7 @@ const page = () => {
   //Paginación
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(9);
-  const [totalPages, setTotalPages] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(10);
 
   const [actualizaPaginas, setActualizaPaginas] = useState<boolean>(false);
@@ -29,9 +29,9 @@ const page = () => {
 
   const RenderPagination: React.FC = () => {
     // Define el valor máximo de botones de página a mostrar (en este caso, x)
-    let x: number = 10;
-    if (totalPages > 10) {
-      x = 10;
+    let x: number = 1;
+    if (totalPages > 5) {
+      x = 5;
     } else {
       x = totalPages;
     }
@@ -102,7 +102,7 @@ const page = () => {
     }, [actualizaPaginas]);
 
     useEffect(() => {
-            const ObtenerDatos = async () => {
+          const ObtenerDatos = async () => {
           const queryString = `page=${page}&per_page=${limit}`;
   
           await TiposQuery(queryString);
@@ -160,12 +160,10 @@ const page = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const tiposData = await fetchTipos();
-
-      setTipos(tiposData.data);
-
-      setTotalPages(tiposData.last_page);
-      setTotalRecords(tiposData.total);
+    const tiposData= await fetchTiposQuery(`page=${page}&per_page=${limit}`);
+    setTipos(tiposData.data);
+    setTotalPages(tiposData.last_page);
+    setTotalRecords(tiposData.total);
     };
 
     fetchData();
