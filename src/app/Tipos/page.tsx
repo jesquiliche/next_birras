@@ -154,8 +154,11 @@ const page = () => {
 
   const borrarTipo = async (id: string) => {
     const token = session?.authorization.token || "";
-    await fetchDeleteTiposById(id, token);
-    setActualizaPaginas(true);
+    const ok=await fetchDeleteTiposById(id, token);
+    if(!ok){
+      alert("No se pudo borrar el tipo, tiene cervezas relacionadas")
+    } else {}
+      setActualizaPaginas(true);
   };
 
   useEffect(() => {

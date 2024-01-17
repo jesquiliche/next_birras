@@ -202,8 +202,9 @@ export async function fetchTiposQuery(query: string) {
     const response = await fetch(`${apiUrl}tipos?${query}`, {
       cache: "no-store",
     });
-    console.log(`${apiUrl}tipos?${query}`)
+
     if (!response.ok) {
+      return false
       throw new Error("No se pudieron obtener los datos de la API");
     }
 
@@ -370,12 +371,13 @@ export async function fetchDeleteCervezasById(id: string, token: string) {
     });
 
     if (!response.ok) {
+      return true;
       throw new Error(`Error al eliminar la cerveza con ID ${id}`);
     }
+    return true
+    /*const data = await response.json();
 
-    const data = await response.json();
-
-    return data.data;
+    return data.data;*/
   } catch (error) {
     console.error(error);
   }
@@ -392,11 +394,11 @@ export async function fetchDeleteTiposById(id: string, token: string) {
     
 
     if (!response.ok) {     ;
-      const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/";
-      const data=await response.json();
+      return false
       throw new Error(`Error al eliminar el tipo con ID ${id}`);
     }
 
+    return true
     // Lógica adicional después de una eliminación exitosa, si es necesario
   } catch (error) {
     console.error(error);
