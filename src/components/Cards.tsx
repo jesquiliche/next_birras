@@ -26,8 +26,10 @@ const Cards = ({ cervezas, setCervezas,setActualizaPaginas }: Props) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        cache: "no-store",
+      
       });
+      console.log(response.status);
+      console.log(`${apiUrl}cervezas/${id}`)
       if (!response.ok) {
         alert("Su sesión ha caducado");
       }

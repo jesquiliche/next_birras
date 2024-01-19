@@ -15,6 +15,9 @@ interface CervezaData {
   tipo:string;
   graduacion:string;
   pais:string;
+  formato:string;
+  unidades:number;
+  stock:number;
 }
 
 

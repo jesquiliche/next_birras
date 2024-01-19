@@ -34,6 +34,9 @@ const Edit = ({ params }) => {
     precio: 0,
     foto: "",
     marca: "",
+    stock: 0,
+    unidades: 0,
+    formato:""
   });
 
   if (session.status == "loading") {
@@ -115,6 +118,7 @@ const Edit = ({ params }) => {
       // Manejar la respuesta
       if (response.ok) {
         const data = await response.json();
+        console.log(data)
         setOK("Producto " + data.nombre + " guardado correctamente.");
       } else {
         const errores = await response.json();
@@ -278,6 +282,50 @@ const Edit = ({ params }) => {
               required
             ></input>
           </div>
+
+          <div>
+            <label className="block w-full">Formato:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="formato"
+              id="formato"
+              maxLength={100}
+              value={cerveza.formato}
+              onChange={handleOnChange}
+              required
+            ></input>
+          </div>
+          <div>
+            <label className="block w-full">Unidades:</label>
+            <input
+              type="number"
+              className="form-control"
+              name="unidades"
+              id="unidades"
+              maxLength={100}
+              step="1"
+              value={cerveza.unidades}
+              onChange={handleOnChange}
+              required
+            ></input>
+          </div>
+          <div>
+            <label className="block w-full">Stoxk::</label>
+            <input
+              type="number"
+              className="form-control"
+              name="stock"
+              id="stock"
+              maxLength={100}
+              step="1"
+              value={cerveza.stock}
+              onChange={handleOnChange}
+              required
+            ></input>
+          </div>
+
+
           <div className="flex p-2 items-center">
             <input
               type="checkbox"

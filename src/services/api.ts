@@ -160,15 +160,14 @@ export async function fetchConsultaBD() {
 export async function fetchCervezasById(id: string): Promise<CervezaData> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
 
-  const response = await fetch(`${apiUrl}cervezas/${id}`, {
-    cache: "no-store",
-  });
+  const response = await fetch(`${apiUrl}cervezas/${id}`, { next: { revalidate: 0 } });
 
   if (!response.ok) {
     throw new Error("No se pudieron obtener los datos de la API");
   }
 
   const data = await response.json();
+  console.log(data);
 
   return data;
   // Aquí puedes trabajar con los datos obtenidos de la API

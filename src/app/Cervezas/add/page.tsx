@@ -24,6 +24,9 @@ interface CervezaData {
   foto: string;
   marca: string;
   file: File | null;
+  stock: number;
+  unidades: number;
+  formato: string;
 }
 
 interface File extends Blob {
@@ -53,6 +56,9 @@ const Formulario: React.FC = () => {
     foto: "",
     marca: "",
     file: null,
+    unidades: 1,
+    formato: "",
+    stock: 0,
   });
 
   useEffect(() => {
@@ -120,6 +126,9 @@ const Formulario: React.FC = () => {
       foto: "",
       marca: "",
       file: null,
+      formato: "Lata",
+      stock: 1,
+      unidades: 1,
     });
     setImagePreview(null);
   };
@@ -130,7 +139,8 @@ const Formulario: React.FC = () => {
     setErrors(null);
     setOK("");
     const token = session?.authorization.token || "";
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
+    const apiUrl =
+      process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
     const formData = new FormData();
     formData.append("nombre", cerveza.nombre);
     formData.append("descripcion", cerveza.descripcion);
@@ -143,6 +153,9 @@ const Formulario: React.FC = () => {
     formData.append("precio", cerveza.precio.toString());
 
     formData.append("marca", cerveza.marca);
+    formData.append("unidades", cerveza.unidades.toString());
+    formData.append("stock", cerveza.unidades.toString());
+    formData.append("formato", cerveza.unidades.toString());
 
     // Aquí puedes agregar el campo de archivo si es necesario
     if (cerveza.file) {
@@ -246,7 +259,7 @@ const Formulario: React.FC = () => {
             <label className="">Descripción:</label>
             <textarea
               className="form-control row-span-4 h-64"
-              id="descipcion"
+              id="descripcion"
               name="descripcion"
               value={cerveza.descripcion}
               onChange={handleOnChange}
@@ -362,6 +375,47 @@ const Formulario: React.FC = () => {
               required
             ></input>
           </div>
+          <div>
+            <label className="block w-full">Formato:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="formato"
+              id="formato"
+              maxLength={100}
+              value={cerveza.formato}
+              onChange={handleOnChange}
+              required
+            ></input>
+          </div>
+          <div>
+            <label className="block w-full">Unidades:</label>
+            <input
+              type="number"
+              className="form-control"
+              name="unidades"
+              id="unidades"
+              maxLength={100}
+              step="1"
+              value={cerveza.unidades}
+              onChange={handleOnChange}
+              required
+            ></input>
+          </div>
+          <div>
+            <label className="block w-full">Stoxk::</label>
+            <input
+              type="number"
+              className="form-control"
+              name="stock"
+              id="stock"
+              maxLength={100}
+              step="1"
+              value={cerveza.stock}
+              onChange={handleOnChange}
+              required
+            ></input>
+          </div>
 
           <div className="flex p-2 items-center">
             <input
@@ -383,16 +437,14 @@ const Formulario: React.FC = () => {
             />
             <label className="ml-4 flex">Oferta</label>
           </div>
+          
 
           {loading && <Load />}
 
           <div className="w-full p-2 col-span-3">
             {errors && <DisplayErrors errors={errors} />}
-            {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
-            <button
-              type="submit"
-              className="btn-primary"
-            >
+            {ok && !errors &&  <p className="bg-green-300 rounded p-4">{ok}</p>}
+            <button type="submit" className="btn-primary">
               Guardar
             </button>
           </div>
