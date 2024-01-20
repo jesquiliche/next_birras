@@ -6,6 +6,7 @@ import {
   Tipo,
   Graduacion,
   CervezaData,
+  PaisesData,
 } from "@/interfaces/interfaces";
 
 export async function fetchCervezas() {
@@ -213,7 +214,7 @@ export async function fetchTiposQuery(query: string) {
     return []; // Debes devolver un valor adecuado en caso de error
   }
 }
-export async function fetchPaises(): Promise<Pais[]> {
+export async function fetchPaises(): Promise<PaisesData | undefined> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
   try {
     const response = await fetch(`${apiUrl}paises`,{cache: "no-store"});
@@ -223,12 +224,13 @@ export async function fetchPaises(): Promise<Pais[]> {
     }
 
     const data = await response.json();
-    return data.data;
+    console.log(data)
+    return data;
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {
     console.error("Error al obtener datos:", error);
 
-    return [];
+    return;
   }
 }
 
@@ -290,6 +292,30 @@ export async function fetchTiposById(id:string): Promise<Tipo | undefined> {
     return ; // Debes devolver un valor adecuado en caso de error
   }
 }
+
+export async function fetchPaisesById(id:string): Promise<Pais | undefined> {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
+
+
+  try {
+    const response = await fetch(`${apiUrl}paises/${id}`, { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("No se pudieron obtener los datos de la API");
+    }
+
+    const data = await response.json();
+    console.log(`${apiUrl}paises/${id}`)
+    console.log(data.Pais)
+    return data.Pais;
+
+    // Aquí puedes trabajar con los datos obtenidos de la API
+  } catch (error) {
+    console.log(error);
+    return ; // Debes devolver un valor adecuado en caso de error
+  }
+}
+
 
 export async function fetchGraduaciones(): Promise<Graduacion[]> {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
@@ -379,6 +405,7 @@ export async function fetchDeleteCervezasById(id: string, token: string) {
     console.error(error);
   }
 }
+
 export async function fetchDeleteTiposById(id: string, token: string) {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
     try {
@@ -400,4 +427,27 @@ export async function fetchDeleteTiposById(id: string, token: string) {
   } catch (error) {
     console.error(error);
   }
+}
+
+  export async function fetchDeletePaisesById(id: string, token: string) {
+    const apiUrl = process.env.API_URL ?? "http://127.0.0.1:8000/api/v1/";
+      try {
+      const response = await fetch(`${apiUrl}paises/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+  
+      if (!response.ok) {     ;
+        return false
+        throw new Error(`Error al eliminar el tipo con ID ${id}`);
+      }
+  
+      return true
+      // Lógica adicional después de una eliminación exitosa, si es necesario
+    } catch (error) {
+      console.error(error);
+    }
 }

@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Tipo, Pais, Color, Graduacion } from "@/interfaces/interfaces";
+import { Tipo, Pais, Color, Graduacion, PaisesData } from "@/interfaces/interfaces";
 import { fetchTipos, fetchPaises, fetchColores, fetchGraduaciones } from "@/services/api";
 import { Cerveza } from '@/interfaces/interfaces';
 import { fetchCervezasQuery,fetchCervezas } from '@/services/api';
@@ -11,7 +11,7 @@ interface Props {
 const Formulario: React.FC<Props> = ({ data }) => {
   const [localData, setLocalData] = useState(data);
   const [tipos, setTipos] = useState<Tipo[]>([]);
-  const [paises, setPaises] = useState<Pais[]>([]);
+  const [paises, setPaises] = useState<PaisesData |undefined>();
   const [colores, setColores] = useState<Color[]>([]);
   const [graduaciones, setGraduaciones] = useState<Graduacion[]>([]);
   const [formData, setFormData] = useState({
@@ -105,7 +105,7 @@ const Formulario: React.FC<Props> = ({ data }) => {
               
               </option>
   
-            {paises.map((p) => (
+            {paises && paises.data.map((p:Pais) => (
               <option key={p.id} value={p.id}>
                 {p.nombre}
               </option>

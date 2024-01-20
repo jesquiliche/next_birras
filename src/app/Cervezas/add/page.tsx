@@ -40,7 +40,7 @@ const Formulario: React.FC = () => {
   const { data: session, status } = useSession();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [tipos, setTipos] = useState<Tipo[]>([]);
-  const [paises, setPaises] = useState<Pais[]>([]);
+  const [paises, setPaises] = useState<Pais[] | undefined>([]);
   const [colores, setColores] = useState<Color[]>([]);
   const [graduaciones, setGraduaciones] = useState<Graduacion[]>([]);
   const [cerveza, setCerveza] = useState<CervezaData>({
@@ -68,7 +68,7 @@ const Formulario: React.FC = () => {
         setTipos(tiposData.data);
 
         const paisesData = await fetchPaises();
-        setPaises(paisesData);
+        setPaises(paisesData?.data);
 
         const coloresData = await fetchColores();
         setColores(coloresData);
@@ -171,7 +171,8 @@ const Formulario: React.FC = () => {
         },
         body: formData,
       });
-
+      setOK("");
+      setErrors(null);
       // Manejar la respuesta
       if (response.ok) {
         const data = await response.json();
@@ -301,7 +302,7 @@ const Formulario: React.FC = () => {
               required
             >
               <option key={0}></option>
-              {paises.map((p) => (
+              {paises && paises.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.nombre}
                 </option>

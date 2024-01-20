@@ -16,6 +16,7 @@ import {
   Color,
   Graduacion,
   Pais,
+  PaisesData,
   Tipo,
 } from "@/interfaces/interfaces";
 import CervezasTable from "@/components/CervezasTable";
@@ -34,7 +35,7 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [cervezas, setCervezas] = useState<Cerveza[]>([]);
   const [tipos, setTipos] = useState<Tipo[]>([]);
-  const [paises, setPaises] = useState<Pais[]>([]);
+  const [paises, setPaises] = useState<PaisesData | undefined>(undefined);
   const [colores, setColores] = useState<Color[]>([]);
   const [graduaciones, setGraduaciones] = useState<Graduacion[]>([]);
   const [formData, setFormData] = useState({
@@ -291,7 +292,7 @@ const Page = () => {
                 >
                   <option key="0" value="0"></option>
 
-                  {paises.map((p) => (
+                  {paises && paises.data.map((p) => (
                     <option
                       key={p.id}
                       value={p.id}

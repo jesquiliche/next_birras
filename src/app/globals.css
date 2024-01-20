@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .form-control{
-    @apply w-full  p-2 border rounded bg-gray-100
+    @apply w-full  p-2 border rounded bg-gray-200 focus:border-2 
 }
 
 .btn-page {

@@ -44,6 +44,7 @@ export interface Cerveza {
   export interface Pais {
     id: number
     nombre: string
+    descripcion:string
     created_at: any
     updated_at: any
   }
