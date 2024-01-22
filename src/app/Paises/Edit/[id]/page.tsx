@@ -37,7 +37,7 @@ const Edit: React.FC<EditProps> = ({ params }) => {
     };
 
     fetchData();
-    console.log(pais)
+  
   }, [id]);
 
   const handleOnChange = (

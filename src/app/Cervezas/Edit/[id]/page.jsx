@@ -96,12 +96,12 @@ const Edit = ({ params }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(cerveza);
+    
     setLoading(true);
     setErrors(null);
     setOK("");
     const token = session?.authorization.token || "";
-    console.log(token);
+    
     const apiUrl =
       process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
 
@@ -118,7 +118,7 @@ const Edit = ({ params }) => {
       // Manejar la respuesta
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
+        
         setOK("Producto " + data.nombre + " guardado correctamente.");
       } else {
         const errores = await response.json();

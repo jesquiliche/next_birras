@@ -23,7 +23,6 @@ export default async function Home() {
   const coloresData = await fetchCervezasPorColores();
   const graduacionesData = await fetchCervezasPorGraduaciones();
   const stock = await fetchStockPorPais();
-  console.log(stock);
   
   const tablas = await fetchConsultaTablas();
   const BD = await fetchConsultaBD();

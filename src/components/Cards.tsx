@@ -28,8 +28,7 @@ const Cards = ({ cervezas, setCervezas,setActualizaPaginas }: Props) => {
         },
       
       });
-      console.log(response.status);
-      console.log(`${apiUrl}cervezas/${id}`)
+      
       if (!response.ok) {
         alert("Su sesión ha caducado");
       }

@@ -29,8 +29,7 @@ export const PieChartComponent = ({ data, title }) => {
 
 export const DonutChartComponent = ({ data, title }) => {
   const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#4CAF50', '#FF4500', '#7B68EE', '#FFD700'];
-  console.log("Entro")
-  console.log(data)
+ 
   return (
     <div className='rounded-lg border-2 border-gray-200 shadow-lg p-4 mx-auto mt-4'>
       <h1 className='text-md md:text-2xl font-bold text-center'>{title}</h1>
