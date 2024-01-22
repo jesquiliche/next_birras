@@ -68,8 +68,8 @@ const Formulario: React.FC<Props> = ({ data }) => {
   return (
     <>
       <h1 className="text-2xl font-bold text-center">Filtro</h1>
-      <form onSubmit={handleSubmit} className="flex flex-wrap">
-        <div className="w-full md:w-1/4 p-2">
+      <form onSubmit={handleSubmit} className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="w-full p-2">
           <label htmlFor="tipo" className="block text-gray-700">
             Tipo:
           </label>
@@ -91,7 +91,7 @@ const Formulario: React.FC<Props> = ({ data }) => {
           </select>
         </div>
 
-        <div className="w-full md:w-1/4 p-2">
+        <div className="w-full p-2">
           <label htmlFor="pais" className="block text-gray-700">
             País:
           </label>
@@ -113,7 +113,7 @@ const Formulario: React.FC<Props> = ({ data }) => {
           </select>
         </div>
 
-        <div className="w-full md:w-1/4 p-2">
+        <div className="w-full p-2">
           <label htmlFor="color" className="block text-gray-700">
             Color:
           </label>
@@ -135,7 +135,7 @@ const Formulario: React.FC<Props> = ({ data }) => {
           </select>
         </div>
 
-        <div className="w-full md:w-1/4 p-2">
+        <div className="w-full  p-2">
           <label htmlFor="graduacion" className="block text-gray-700">
             Graduación:
           </label>

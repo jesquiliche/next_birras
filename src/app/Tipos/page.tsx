@@ -158,6 +158,8 @@ const page = () => {
     if(!ok){
       alert("No se pudo borrar el tipo, tiene cervezas relacionadas")
     } else {}
+  
+   
       setActualizaPaginas(true);
   };
 

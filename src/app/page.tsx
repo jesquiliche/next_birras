@@ -1,7 +1,6 @@
 import CardBase from "../components/CardBase";
-import PieChartComponent from "../components/tarta";
-import BarChartComponent from "../components/Barras";
-import DonutChartComponent from "../components/DonutChart";
+import {BarListComponent,PieChartComponent,BarChartComponent,DonutChartComponent} from "../components/graficos"
+import DataTableStock from "@/components/StokTable";
 
 import {
   fetchCervezasPorPaises,
@@ -10,6 +9,7 @@ import {
   fetchCervezasPorGraduaciones,
   fetchConsultaTablas,
   fetchConsultaBD,
+  fetchStockPorPais,
 } from "@/services/api";
 
 type TableInfo = {
@@ -22,7 +22,9 @@ export default async function Home() {
   const tipos = await fetchCervezasPorTipos();
   const coloresData = await fetchCervezasPorColores();
   const graduacionesData = await fetchCervezasPorGraduaciones();
-  console.log(graduacionesData);
+  const stock = await fetchStockPorPais();
+  console.log(stock);
+  
   const tablas = await fetchConsultaTablas();
   const BD = await fetchConsultaBD();
 
@@ -47,23 +49,44 @@ export default async function Home() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold p-4 text-center">Estadisticas</h1>
-      <div className="grid grid-cols-4 gap-4 w-11/12 mx-auto">
+      <h1 className="text-md font-bold md:text-2xl  md:p-4 text-center">Estadisticas</h1>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-11/12 mx-auto">
         <CardBase title="Cervezas" metric={numCervezas} percent={100} />
         <CardBase title="Tipos" metric={numTipos} percent={100} />
         <CardBase title="Colores" metric={numColores} percent={100} />
         <CardBase title="Graduaciones" metric={numGraduaciones} percent={100} />
       </div>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-1  md:grid-cols-2">
+        <div className="w-11/12 mx-auto col-span-1">
         <PieChartComponent data={data} title="Cervezas por países" />
-
+        </div>
+        <div className="w-11/12 mx-auto col-span-1">
         <DonutChartComponent data={tipos} title="Cervezas por tipos" />
-        <PieChartComponent data={coloresData} title="Cervezas por colores" />
+        </div>
+        <div className="w-11/12 mx-auto col-span-1">        <PieChartComponent data={coloresData} title="Cervezas por colores" />
+        </div>
+        <div className="w-11/12 mx-auto col-span-1">
         <PieChartComponent
           data={graduacionesData}
           title="Cervezas por graduaciones"
         />
+        </div>
+        <div className="w-11/12 mx-auto col-span-1">
+        <DonutChartComponent
+          data={stock}
+          title="Stock por paises"
+        />
+        
+        </div>
+        <div className="w-11/12 mx-auto col-span-1">
+        <BarListComponent data={stock} 
+        title="Stock por paises" source="Pais"
+        value="Stock" />
+       
+        </div>
+        <div className="w-11/12 mx-auto md:col-span-2">
         <BarChartComponent data={BD} />
+        </div>
       </div>
     </>
   );

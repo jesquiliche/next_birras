@@ -52,7 +52,7 @@ const Edit = ({ params }) => {
         setTipos(tiposData.data);
 
         const paisesData = await fetchPaises();
-        setPaises(paisesData);
+        setPaises(paisesData.data);
 
         const coloresData = await fetchColores();
         setColores(coloresData);

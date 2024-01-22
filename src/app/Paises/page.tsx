@@ -6,18 +6,17 @@ import { useSession } from "next-auth/react";
 import Load from "@/components/Load";
 import { useState, useEffect } from "react";
 
-const page =  () => {
+const page = () => {
   const [paises, setPaises] = useState<PaisesData | undefined>();
-
   const { data: session, status } = useSession();
 
   const borrarPais = async (id: string) => {
     const token = session?.authorization.token || "";
     const ok = await fetchDeletePaisesById(id, token);
-    if(!ok){
-      alert("No se pudo borrar el tipo, tiene cervezas relacionadas")
-    } else {}
-    //  setActualizaPaginas(true);*/
+    if (!ok) {
+      alert("No se pudo borrar el tipo, tiene cervezas relacionadas");
+    } else {
+    }
   };
 
   if (status == "loading") {
@@ -31,7 +30,7 @@ const page =  () => {
   useEffect(() => {
     const fetchData = async () => {
       const paisesData = await fetchPaises();
-      console.log(paisesData);
+    
       setPaises(paisesData);
     };
 

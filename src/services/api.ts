@@ -108,7 +108,29 @@ export async function fetchCervezasPorGraduaciones() {
     }
 
     const data = await response.json();
-    console.log(data)
+    
+    return data;
+    // Aquí puedes trabajar con los datos obtenidos de la API
+  } catch (error) {
+    console.error(error);
+    return []; // Debes devolver un valor adecuado en caso de error
+  }
+}
+
+export async function fetchStockPorPais() {
+  const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
+
+  try {
+    const response = await fetch(`${apiUrl}stockPorPais`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("No se pudieron obtener los datos de la API");
+    }
+
+    const data = await response.json();
+  
     return data;
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {
@@ -168,7 +190,7 @@ export async function fetchCervezasById(id: string): Promise<CervezaData> {
   }
 
   const data = await response.json();
-  console.log(data);
+  
 
   return data;
   // Aquí puedes trabajar con los datos obtenidos de la API
@@ -224,7 +246,7 @@ export async function fetchPaises(): Promise<PaisesData | undefined> {
     }
 
     const data = await response.json();
-    console.log(data)
+    
     return data;
     // Aquí puedes trabajar con los datos obtenidos de la API
   } catch (error) {
@@ -305,8 +327,7 @@ export async function fetchPaisesById(id:string): Promise<Pais | undefined> {
     }
 
     const data = await response.json();
-    console.log(`${apiUrl}paises/${id}`)
-    console.log(data.Pais)
+
     return data.Pais;
 
     // Aquí puedes trabajar con los datos obtenidos de la API

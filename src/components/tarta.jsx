@@ -4,7 +4,7 @@ import { PieChart, Pie, Tooltip, Cell,Label } from 'recharts';
 
 const PieChartComponent = ({ data, title }) => {
   // Definir colores para cada sección
-  const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#4CAF50', '#FF4500', '#7B68EE', '#FFD700'];
 
   return (
     <div className='rounded-lg border-2 border-gray-200 shadow-lg p-4 mx-auto mt-4'>

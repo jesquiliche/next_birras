@@ -9,7 +9,6 @@ const CardBase = ({ title, metric, percent }) => {
       <Flex marginTop="mt-4">
         <Text>{percent} %</Text>
       </Flex>
-      <ProgressBar percentageValue={percent} marginTop="mt-2" />
     </Card>
   );
 };
