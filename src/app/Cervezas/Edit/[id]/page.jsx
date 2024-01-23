@@ -349,7 +349,7 @@ const Edit = ({ params }) => {
           </div>
 
           {loading && <Load />}
-          <div className="w-full p-2 col-span-3 mt-2">
+          <div className="col-span-1 md:col-span-3 mt-2">
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
             <button type="submit" className="btn-primary mt-2">
