@@ -218,240 +218,240 @@ const Formulario: React.FC = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold text-center">Añadir producto</h1>
-      <div className="w-11/12 mx-auto border-2 rounded-lg shadow-lg py-2">
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-3 w-11/12 mx-auto"
-        >
-          <div className="p-2 col-span-1">
-            <label className="block w-full">Foto:</label>
-            <input
-              type="file"
-              className="form-control"
-              onChange={handleImagenChange}
-              required
-            ></input>
-            <img
-              className="rounded-lg h-80 mt-2"
-              id="image-preview"
-              src={imagePreview || ""}
-              alt="Vista previa de la imagen"
-              style={{
-                display: imagePreview ? "block" : "none",
-                maxWidth: "100%",
-                margin: "0 auto",
-              }}
-            />
-          </div>
-          <div className="p-2 col-span-2">
-            <label className="block w-full">Nombre:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="nombre"
-              id="nombre"
-              maxLength={150}
-              value={cerveza.nombre}
-              onChange={handleOnChange}
-              required
-            ></input>
+    <h1 className="text-2xl font-bold text-center">Añadir producto</h1>
+    <div className="w-11/12 mx-auto border-2 rounded-lg shadow-lg py-2">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-3 w-11/12 mx-auto"
+      >
+        <div className="p-2 col-span-1">
+          <label className="block w-full">Foto:</label>
+          <input
+            type="file"
+            className="form-control"
+            onChange={handleImagenChange}
+            required
+          ></input>
+          <img
+            className="rounded-lg h-80 mt-2"
+            id="image-preview"
+            src={imagePreview || ""}
+            alt="Vista previa de la imagen"
+            style={{
+              display: imagePreview ? "block" : "none",
+              maxWidth: "100%",
+              margin: "0 auto",
+            }}
+          />
+        </div>
+        <div className="p-2 col-span-2">
+          <label className="block w-full">Nombre:</label>
+          <input
+            type="text"
+            className="form-control"
+            name="nombre"
+            id="nombre"
+            maxLength={150}
+            value={cerveza.nombre}
+            onChange={handleOnChange}
+            required
+          ></input>
 
-            <label className="">Descripción:</label>
-            <textarea
-              className="form-control row-span-4 h-64"
-              id="descripcion"
-              name="descripcion"
-              value={cerveza.descripcion}
-              onChange={handleOnChange}
-              required
-            ></textarea>
-          </div>
+          <label className="">Descripción:</label>
+          <textarea
+            className="form-control row-span-4 h-64"
+            id="descripcion"
+            name="descripcion"
+            value={cerveza.descripcion}
+            onChange={handleOnChange}
+            required
+          ></textarea>
+        </div>
 
-          <div className="w-full p-2">
-            <label htmlFor="tipo" className="block text-gray-700">
-              Tipo:
-            </label>
-            <select
-              name="tipo_id"
-              id="tipo_id"
-              onChange={handleOnChange}
-              className="form-control"
-              value={cerveza.tipo_id}
-              required
-            >
-              <option key={0}></option>
-              {tipos.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="w-full p-2">
+          <label htmlFor="tipo" className="block text-gray-700">
+            Tipo:
+          </label>
+          <select
+            name="tipo_id"
+            id="tipo_id"
+            onChange={handleOnChange}
+            className="form-control"
+            value={cerveza.tipo_id}
+            required
+          >
+            <option key={0}></option>
+            {tipos.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          <div className="w-full p-2">
-            <label htmlFor="pais" className="block text-gray-700">
-              País:
-            </label>
-            <select
-              name="pais_id"
-              id="pais_id"
-              onChange={handleOnChange}
-              value={cerveza.pais_id}
-              className="form-control"
-              required
-            >
-              <option key={0}></option>
-              {paises && paises.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="w-full p-2">
+          <label htmlFor="pais" className="block text-gray-700">
+            País:
+          </label>
+          <select
+            name="pais_id"
+            id="pais_id"
+            onChange={handleOnChange}
+            value={cerveza.pais_id}
+            className="form-control"
+            required
+          >
+            <option key={0}></option>
+            {paises && paises.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          <div className="w-full p-2">
-            <label htmlFor="color" className="block text-gray-700">
-              Color:
-            </label>
-            <select
-              name="color_id"
-              id="color_id"
-              onChange={handleOnChange}
-              value={cerveza.color_id}
-              className="form-control"
-              required
-            >
-              <option key={0}></option>
-              {colores.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="w-full p-2">
+          <label htmlFor="color" className="block text-gray-700">
+            Color:
+          </label>
+          <select
+            name="color_id"
+            id="color_id"
+            onChange={handleOnChange}
+            value={cerveza.color_id}
+            className="form-control"
+            required
+          >
+            <option key={0}></option>
+            {colores.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
 
-          <div className="w-full p-2">
-            <label htmlFor="graduacion" className="block text-gray-700">
-              Graduación:
-            </label>
-            <select
-              name="graduacion_id"
-              id="graduacion_id"
-              onChange={handleOnChange}
-              value={cerveza.graduacion_id}
-              className="form-control"
-              required
-            >
-              <option key={0}></option>
-              {graduaciones.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="p-2">
-            <label className="block w-full">Marca:</label>
-            <input
-              type="text"
-              className="form-control"
-              value={cerveza.marca}
-              required
-              name="marca"
-              onChange={handleOnChange}
-              id="marca"
-            ></input>
-          </div>
-          <div className="p-2">
-            <label className="block w-full">Precio:</label>
-            <input
-              type="number"
-              className="form-control"
-              name="precio"
-              id="precio"
-              step="0.01"
-              onChange={handleOnChange}
-              value={cerveza.precio}
-              required
-            ></input>
-          </div>
-          <div>
-            <label className="block w-full">Formato:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="formato"
-              id="formato"
-              maxLength={100}
-              value={cerveza.formato}
-              onChange={handleOnChange}
-              required
-            ></input>
-          </div>
-          <div>
-            <label className="block w-full">Unidades:</label>
-            <input
-              type="number"
-              className="form-control"
-              name="unidades"
-              id="unidades"
-              maxLength={100}
-              step="1"
-              value={cerveza.unidades}
-              onChange={handleOnChange}
-              required
-            ></input>
-          </div>
-          <div>
-            <label className="block w-full">Stoxk::</label>
-            <input
-              type="number"
-              className="form-control"
-              name="stock"
-              id="stock"
-              maxLength={100}
-              step="1"
-              value={cerveza.stock}
-              onChange={handleOnChange}
-              required
-            ></input>
-          </div>
+        <div className="w-full p-2">
+          <label htmlFor="graduacion" className="block text-gray-700">
+            Graduación:
+          </label>
+          <select
+            name="graduacion_id"
+            id="graduacion_id"
+            onChange={handleOnChange}
+            value={cerveza.graduacion_id}
+            className="form-control"
+            required
+          >
+            <option key={0}></option>
+            {graduaciones.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="p-2">
+          <label className="block w-full">Marca:</label>
+          <input
+            type="text"
+            className="form-control"
+            value={cerveza.marca}
+            required
+            name="marca"
+            onChange={handleOnChange}
+            id="marca"
+          ></input>
+        </div>
+        <div className="p-2">
+          <label className="block w-full">Precio:</label>
+          <input
+            type="number"
+            className="form-control"
+            name="precio"
+            id="precio"
+            step="0.01"
+            onChange={handleOnChange}
+            value={cerveza.precio}
+            required
+          ></input>
+        </div>
+        <div className="p-2">
+          <label className="block w-full">Formato:</label>
+          <input
+            type="text"
+            className="form-control"
+            name="formato"
+            id="formato"
+            maxLength={100}
+            value={cerveza.formato}
+            onChange={handleOnChange}
+            required
+          ></input>
+        </div>
+        <div className="p-2">
+          <label className="block w-full">Unidades:</label>
+          <input
+            type="number"
+            className="form-control"
+            name="unidades"
+            id="unidades"
+            maxLength={100}
+            step="1"
+            value={cerveza.unidades}
+            onChange={handleOnChange}
+            required
+          ></input>
+        </div>
+        <div className="p-2">
+          <label className="block w-full">Stock:</label>
+          <input
+            type="number"
+            className="form-control"
+            name="stock"
+            id="stock"
+            maxLength={100}
+            step="1"
+            value={cerveza.stock}
+            onChange={handleOnChange}
+            required
+          ></input>
+        </div>
 
-          <div className="flex p-2 items-center">
-            <input
-              type="checkbox"
-              onChange={handleOnChange}
-              id="novedad"
-              name="novedad"
-              value={0}
-              className="p-2 border rounded bg-gray-100"
-            />
-            <label className="ml-4 flex">Novedad</label>
-            <input
-              type="checkbox"
-              id="oferta"
-              name="oferta"
-              onChange={handleOnChange}
-              value={0}
-              className="ml-4 p-2 border rounded bg-gray-100"
-            />
-            <label className="ml-4 flex">Oferta</label>
-          </div>
-          
+        <div className="flex p-2 items-center">
+          <input
+            type="checkbox"
+            onChange={handleOnChange}
+            id="novedad"
+            name="novedad"
+            value={0}
+            className="p-2 border rounded bg-gray-100"
+          />
+          <label className="ml-4 flex">Novedad</label>
+          <input
+            type="checkbox"
+            id="oferta"
+            name="oferta"
+            onChange={handleOnChange}
+            value={0}
+            className="ml-4 p-2 border rounded bg-gray-100"
+          />
+          <label className="ml-4 flex">Oferta</label>
+        </div>
 
-          {loading && <Load />}
+        {loading && <Load />}
 
-          <div className="w-full p-2 col-span-3">
-            {errors && <DisplayErrors errors={errors} />}
-            {ok && !errors &&  <p className="bg-green-300 rounded p-4">{ok}</p>}
-            <button type="submit" className="btn-primary">
-              Guardar
-            </button>
-          </div>
-        </form>
-      </div>
-    </>
+        <div className="w-full p-2 col-span-3">
+          {errors && <DisplayErrors errors={errors} />}
+          {ok && !errors && <p className="bg-green-300 rounded p-4">{ok}</p>}
+          <button type="submit" className="btn-primary">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </>
+
   );
 };
 

@@ -254,7 +254,7 @@ const Page = () => {
           <Load />
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-wrap">
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <label htmlFor="tipo" className="block text-gray-700">
                   Tipo:
