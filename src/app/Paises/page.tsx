@@ -47,9 +47,9 @@ const page = () => {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <th>#</th>
+              <th className="hidden md:table-cell">#</th>
               <th>Nombre</th>
-              <th>Descripción</th>
+              <th className="hidden md:table-cell">Descripción</th>
               <th className="w-10">Editar</th>
               <th className="w-10">borrar</th>
             </thead>
@@ -57,9 +57,9 @@ const page = () => {
               {paises &&
                 paises.data.map((t) => (
                   <tr key={t.id}>
-                    <td className="p-2">{t.id}</td>
+                    <td className="p-2 hidden md:table-cell">{t.id}</td>
                     <td className="p-2">{t.nombre}</td>
-                    <td className="p-2">{t.descripcion}</td>
+                    <td className="p-2 hidden md:table-cell">{t.descripcion}</td>
                     <td className="p-4">
                       <Link
                         href={`/Paises/Edit/${t.id}`}
