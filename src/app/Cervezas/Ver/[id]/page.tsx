@@ -8,15 +8,15 @@ export default async function Detalle({ params }: { params: { id: string } }) {
   return (
     <>
       <article className="w-11/12 border-2 shadow-lg rounded-lg mx-auto p-2">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="font-bold mt-2 text-lg">Foto:</label>
             <img src={cerveza?.foto} />
           </div>
-          <div className="bg-gray-100 p-4 mb-2">
+          <div className="bg-gray-200 p-4 mb-2">
             <div className="grid grid-cols-2 gap-4">
               <div>
-              {cerveza?.novedad == 0 && (
+              {cerveza?.novedad != 0 && (
                 <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
                   <label className="font-bold p-2 italic text-white">
                     Novedad
@@ -25,7 +25,7 @@ export default async function Detalle({ params }: { params: { id: string } }) {
               )}
               </div>
               <div>
-              {cerveza?.oferta == 0 && (
+              {cerveza?.oferta != 0 && (
                 <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
                   <label className="font-bold p-2 italic text-white text-center">
                     Oferta
@@ -40,7 +40,7 @@ export default async function Detalle({ params }: { params: { id: string } }) {
             <label className="font-bold mt-2 text-lg">Descripción:</label>
             <h1>{cerveza?.descripcion}</h1>
             {/* La línea siguiente tiene un div de más (un ">" de más) */}
-            <div className="grid grid-cols-2 gap-4 bg-gray-100 rounded-lg mt-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-200 rounded-lg mt-2">
               <div>
                 {" "}
                 {/* Quité el ">" sobrante */}
