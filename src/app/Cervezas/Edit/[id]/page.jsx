@@ -141,9 +141,9 @@ const Edit = ({ params }) => {
       <div className="w-11/12 mx-auto border-2 rounded-lg shadow-lg py-2">
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-3 w-11/12 mx-auto"
+          className="grid grid-cols-1 md:grid-cols-3 w-11/12 mx-auto gap-4"
         >
-          <div className="p-2 col-span-1">
+          <div className="col-span-1">
             <img
               className="rounded-lg h-80 mt-2"
               id="image-preview"
@@ -151,7 +151,7 @@ const Edit = ({ params }) => {
               alt="Vista previa de la imagen"
             />
           </div>
-          <div className="p-2 col-span-2">
+          <div className="col-span-1 md:col-span-2">
             <label className="block w-full">Nombre:</label>
             <input
               type="text"
@@ -173,7 +173,7 @@ const Edit = ({ params }) => {
               required
             ></textarea>
           </div>
-          <div className="w-full p-2">
+          <div className="col-span-1">
             <label className="block text-gray-700">Tipo:</label>
             <select
               name="tipo_id"
@@ -194,7 +194,7 @@ const Edit = ({ params }) => {
               ))}
             </select>
           </div>
-          <div className="w-full p-2">
+          <div className="col-span-1">
             <label className="block text-gray-700">País:</label>
             <select
               name="pais_id"
@@ -215,7 +215,7 @@ const Edit = ({ params }) => {
               ))}
             </select>
           </div>
-          <div className="w-full p-2">
+          <div className="col-span-1">
             <label className="block text-gray-700">Color:</label>
             <select
               name="color_id"
@@ -236,7 +236,7 @@ const Edit = ({ params }) => {
               ))}
             </select>
           </div>
-          <div className="w-full p-2">
+          <div className="col-span-1">
             <label className="block text-gray-700">Graduación:</label>
             <select
               name="graduacion_id"
@@ -257,7 +257,7 @@ const Edit = ({ params }) => {
               ))}
             </select>
           </div>
-          <div className="p-2">
+          <div className="col-span-1">
             <label className="block w-full">Marca:</label>
             <input
               type="text"
@@ -269,7 +269,7 @@ const Edit = ({ params }) => {
               id="marca"
             ></input>
           </div>
-          <div className="p-2">
+          <div className="col-span-1">
             <label className="block w-full">Precio:</label>
             <input
               type="number"
@@ -284,7 +284,7 @@ const Edit = ({ params }) => {
           </div>
 
           <div>
-            <label className="block w-full">Formato:</label>
+            <label className="col-span-1">Formato:</label>
             <input
               type="text"
               className="form-control"
@@ -297,7 +297,7 @@ const Edit = ({ params }) => {
             ></input>
           </div>
           <div>
-            <label className="block w-full">Unidades:</label>
+            <label className="col-span-1">Unidades:</label>
             <input
               type="number"
               className="form-control"
@@ -311,7 +311,7 @@ const Edit = ({ params }) => {
             ></input>
           </div>
           <div>
-            <label className="block w-full">Stoxk::</label>
+            <label className="col-span-1">Stoxk::</label>
             <input
               type="number"
               className="form-control"

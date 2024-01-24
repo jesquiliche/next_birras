@@ -184,6 +184,7 @@ const page = () => {
           <Link href="/Tipos/Add" className="btn-primary py-2">
             Añadir
           </Link>
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <th>#</th>
@@ -195,9 +196,9 @@ const page = () => {
               {tipos &&
                 tipos?.map((t) => (
                   <tr key={t.id}>
-                    <td className="p-2">{t.id}</td>
+                    <td className="hidden md:table-cell">{t.id}</td>
                     <td className="p-2">{t.nombre}</td>
-                    <td className="p-2">{t.descripcion}</td>
+                    <td className="hidden md:table-cell">{t.descripcion}</td>
                     <td className="p-4 flex items-center">
                       <Link
                         href={`/Tipos/Edit/${t.id}`}
@@ -218,6 +219,7 @@ const page = () => {
                 ))}
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </MagicMotion>
