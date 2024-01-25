@@ -42,7 +42,7 @@ const Cards = ({ cervezas, setCervezas,setActualizaPaginas }: Props) => {
   return (
     <>
     <MagicMotion>
-      <div className="grid grid-cola-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
+      <div className="grid grid-cola-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
         {cervezas.map((cerveza) => (
           <div
             key={cerveza.id}

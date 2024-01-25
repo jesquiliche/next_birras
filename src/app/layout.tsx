@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar';
 import Navbar from '@/components/Navbar';
+import Navbar2 from '@/components/NavBar2';
 import SessionAuthProvider from '@/context/SessionAuthProvider';
 
 
@@ -25,7 +26,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <SessionAuthProvider>
       <div className='flex flex-col md:flex-row'>
-          <Sidebar />
+      <div className='hidden md:block'>
+              <Sidebar />
+            </div>
                    <div className='flex-1 '>
                    <Navbar />
             {children}

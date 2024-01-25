@@ -27,7 +27,7 @@ import Cards from "@/components/Cards";
 const Page = () => {
   //Paginación
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(9);
+  const [limit, setLimit] = useState(12);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
 
