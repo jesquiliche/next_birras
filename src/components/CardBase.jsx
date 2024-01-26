@@ -6,9 +6,9 @@ const CardBase = ({ title, metric, percent }) => {
     <Card className="max-w-xs mx-auto" decoration="left" decorationColor="blue">
       <Text>{title}</Text>
       <Metric>{metric}</Metric>
-      <Flex marginTop="mt-4">
+   {/*   <Flex marginTop="mt-4">
         <Text>{percent} %</Text>
-      </Flex>
+  </Flex> */}
     </Card>
   );
 };
