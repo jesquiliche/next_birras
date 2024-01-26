@@ -10,6 +10,7 @@ import {
 } from "@/services/api";
 import DisplayErrors from "@/components/DisplayErrors";
 import Load from "@/components/Load";
+import Link from "next/link";
 
 interface CervezaData {
   nombre: string;
@@ -219,9 +220,7 @@ const Formulario: React.FC = () => {
   return (
     <>
       <h1 className="text-2xl font-bold text-center">Añadir producto</h1>
-      <form
-       onSubmit={handleSubmit}
-      >
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-11/12 mx-auto rounded-lg shadow-lg p-4 border-2">
           <div>
             <label className="block w-full">Foto:</label>
@@ -440,9 +439,14 @@ const Formulario: React.FC = () => {
           <div className="col-span-1 md:col-span-3">
             {errors && <DisplayErrors errors={errors} />}
             {ok && !errors && <p className="bg-green-300 rounded p-4">{ok}</p>}
-            <button type="submit" className="btn-primary">
-              Guardar
-            </button>
+            <div className="flex flex-items-center">
+              <button type="submit" className="btn-primary">
+                Guardar
+              </button>
+              <Link href="/Cervezas" className="btn-primary">
+                Volver
+              </Link>
+            </div>
           </div>
         </div>
       </form>

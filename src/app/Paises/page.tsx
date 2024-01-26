@@ -30,7 +30,7 @@ const page = () => {
   useEffect(() => {
     const fetchData = async () => {
       const paisesData = await fetchPaises();
-    
+
       setPaises(paisesData);
     };
 
@@ -41,9 +41,14 @@ const page = () => {
     <div>
       <h1 className="text-2xl font-bold text-center">Paises</h1>
       <div className="w-11/12 mx-auto border-2 p-4 rounded-lg">
-        <Link href="/Paises/Add" className="btn-primary py-2">
-          Añadir
-        </Link>
+        <div className="flex items-center">
+          <Link href="/Paises/Add" className="btn-primary py-2">
+            Añadir
+          </Link>
+          <Link href="/" className="btn-primary">
+            Volver
+          </Link>
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -59,7 +64,9 @@ const page = () => {
                   <tr key={t.id}>
                     <td className="p-2 hidden md:table-cell">{t.id}</td>
                     <td className="p-2">{t.nombre}</td>
-                    <td className="p-2 hidden md:table-cell">{t.descripcion}</td>
+                    <td className="p-2 hidden md:table-cell">
+                      {t.descripcion}
+                    </td>
                     <td className="p-4">
                       <Link
                         href={`/Paises/Edit/${t.id}`}

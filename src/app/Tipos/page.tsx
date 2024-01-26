@@ -1,5 +1,9 @@
 "use client";
-import { fetchDeleteTiposById, fetchTipos,fetchTiposQuery } from "@/services/api";
+import {
+  fetchDeleteTiposById,
+  fetchTipos,
+  fetchTiposQuery,
+} from "@/services/api";
 import { Tipo } from "@/interfaces/interfaces";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -55,10 +59,10 @@ const page = () => {
 
     const TiposQuery = async (queryString: string) => {
       // Aquí puedes construir el query string con los valores de formData
-  
+
       const tiposData = await fetchTiposQuery(queryString);
       setTipos(tiposData.data);
-  
+
       setTotalPages(tiposData.last_page);
       setTotalRecords(tiposData.total);
     };
@@ -87,14 +91,12 @@ const page = () => {
       }
     };
 
-    
     useEffect(() => {
       if (actualizaPaginas) {
         const ObtenerDatos = async () => {
           const queryString = `page=${page}&per_page=${limit}`;
-  
+
           await TiposQuery(queryString);
-          
         };
         ObtenerDatos();
         setActualizaPaginas(false);
@@ -102,19 +104,14 @@ const page = () => {
     }, [actualizaPaginas]);
 
     useEffect(() => {
-          const ObtenerDatos = async () => {
-          const queryString = `page=${page}&per_page=${limit}`;
-  
-          await TiposQuery(queryString);
-          
-        };
-        ObtenerDatos();
-        setActualizaPaginas(false);
-      
+      const ObtenerDatos = async () => {
+        const queryString = `page=${page}&per_page=${limit}`;
+
+        await TiposQuery(queryString);
+      };
+      ObtenerDatos();
+      setActualizaPaginas(false);
     }, [page]);
-
-    
-
 
     return (
       <>
@@ -154,21 +151,21 @@ const page = () => {
 
   const borrarTipo = async (id: string) => {
     const token = session?.authorization.token || "";
-    const ok=await fetchDeleteTiposById(id, token);
-    if(!ok){
-      alert("No se pudo borrar el tipo, tiene cervezas relacionadas")
-    } else {}
-  
-   
-      setActualizaPaginas(true);
+    const ok = await fetchDeleteTiposById(id, token);
+    if (!ok) {
+      alert("No se pudo borrar el tipo, tiene cervezas relacionadas");
+    } else {
+    }
+
+    setActualizaPaginas(true);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-    const tiposData= await fetchTiposQuery(`page=${page}&per_page=${limit}`);
-    setTipos(tiposData.data);
-    setTotalPages(tiposData.last_page);
-    setTotalRecords(tiposData.total);
+      const tiposData = await fetchTiposQuery(`page=${page}&per_page=${limit}`);
+      setTipos(tiposData.data);
+      setTotalPages(tiposData.last_page);
+      setTotalRecords(tiposData.total);
     };
 
     fetchData();
@@ -180,45 +177,51 @@ const page = () => {
         <h1 className="text-2xl font-bold text-center">Tipos</h1>
         <p className="text-center font-bold">Resultados : {totalRecords}</p>
         {totalRecords > limit && <RenderPagination />}
-        <div className="w-11/12 mx-auto border-2 p-4 rounded-lg">
-          <Link href="/Tipos/Add" className="btn-primary py-2">
-            Añadir
-          </Link>
-          <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Descripción</th>
-              <th className="w-10">Acción</th>
-            </thead>
-            <tbody>
-              {tipos &&
-                tipos?.map((t) => (
-                  <tr key={t.id}>
-                    <td className="hidden md:table-cell">{t.id}</td>
-                    <td className="p-2">{t.nombre}</td>
-                    <td className="hidden md:table-cell">{t.descripcion}</td>
-                    <td className="p-4 flex items-center">
-                      <Link
-                        href={`/Tipos/Edit/${t.id}`}
-                        className="btn-primary"
-                      >
-                        Editar
-                      </Link>
 
-                      <button
-                        type="button"
-                        className="btn-primary"
-                        onClick={async () => borrarTipo(t.id.toString())}
-                      >
-                        Borrar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+        <div className="w-11/12 mx-auto border-2 p-4 rounded-lg">
+          <div className="flex items-center">
+            <Link href="/Tipos/Add" className="btn-primary py-2">
+              Añadir
+            </Link>
+            <Link href="/" className="btn-primary">
+              Volver
+            </Link>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th className="w-10">Acción</th>
+              </thead>
+              <tbody>
+                {tipos &&
+                  tipos?.map((t) => (
+                    <tr key={t.id}>
+                      <td className="hidden md:table-cell">{t.id}</td>
+                      <td className="p-2">{t.nombre}</td>
+                      <td className="hidden md:table-cell">{t.descripcion}</td>
+                      <td className="p-4 flex items-center">
+                        <Link
+                          href={`/Tipos/Edit/${t.id}`}
+                          className="btn-primary"
+                        >
+                          Editar
+                        </Link>
+
+                        <button
+                          type="button"
+                          className="btn-primary"
+                          onClick={async () => borrarTipo(t.id.toString())}
+                        >
+                          Borrar
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
