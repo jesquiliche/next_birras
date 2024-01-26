@@ -140,11 +140,11 @@ export async function fetchStockPorPais() {
 }
 
 
-export async function fetchConsultaTablas() {
+export async function fetchConsultaTablas2() {
   const apiUrl = process.env.API_URL ?? "http://127.0.0.1:1337/api/";
 
   try {
-    const response = await fetch(`${apiUrl}consultaTablas`,{ cache: "no-store" });
+    const response = await fetch(`${apiUrl}consultaTablas2`,{ cache: "no-store" });
 
     if (!response.ok) {
       throw new Error(`${apiUrl}consultaTablas`);

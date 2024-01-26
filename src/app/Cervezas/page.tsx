@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Load from "@/components/Load";
+import { useRouter } from "next/navigation";
 
 import {
   fetchCervezas,
@@ -30,6 +31,8 @@ const Page = () => {
   const [limit, setLimit] = useState(12);
   const [totalPages, setTotalPages] = useState(0);
   const [totalRecords, setTotalRecords] = useState(0);
+
+  const router = useRouter();
 
   const [actualizaPaginas, setActualizaPaginas] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -292,15 +295,16 @@ const Page = () => {
                 >
                   <option key="0" value="0"></option>
 
-                  {paises && paises.data.map((p) => (
-                    <option
-                      key={p.id}
-                      value={p.id}
-                      selected={p.id == +formData.pais}
-                    >
-                      {p.nombre}
-                    </option>
-                  ))}
+                  {paises &&
+                    paises.data.map((p) => (
+                      <option
+                        key={p.id}
+                        value={p.id}
+                        selected={p.id == +formData.pais}
+                      >
+                        {p.nombre}
+                      </option>
+                    ))}
                 </select>
               </div>
 
@@ -405,6 +409,9 @@ const Page = () => {
               </button>
               <Link href="/Cervezas/add/" className="btn-primary">
                 Añadir
+              </Link>
+              <Link href="/" className="btn-primary">
+                Volver
               </Link>
             </div>
           </form>

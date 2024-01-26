@@ -13,7 +13,7 @@ import {
   fetchCervezasPorTipos,
   fetchCervezasPorColores,
   fetchCervezasPorGraduaciones,
-  fetchConsultaTablas,
+  fetchConsultaTablas2,
   fetchConsultaBD,
   fetchStockPorPais,
 } from "@/services/api";
@@ -30,27 +30,18 @@ export default async function Home() {
   const graduacionesData = await fetchCervezasPorGraduaciones();
   const stock = await fetchStockPorPais();
 
-  const tablas = await fetchConsultaTablas();
+  const tablas = await fetchConsultaTablas2();
   const BD = await fetchConsultaBD();
 
-  const cervezas: TableInfo[] = tablas.filter(
-    (item: TableInfo) => item.TABLE_NAME === "cervezas"
-  );
-  const colores: TableInfo[] = tablas.filter(
-    (item: TableInfo) => item.TABLE_NAME === "colores"
-  );
-  const tipos1: TableInfo[] = tablas.filter(
-    (item: TableInfo) => item.TABLE_NAME === "tipos"
-  );
+  const numCervezas=tablas.cervezas;
+  
+  const numColores=tablas.colores;
+ 
+  const numTipos = tablas.tipos;
 
-  const graduaciones: TableInfo[] = tablas.filter(
-    (item: TableInfo) => item.TABLE_NAME === "graduaciones"
-  );
+  const numGraduaciones = tablas.graduaciones;
 
-  const numColores = colores[0].TABLE_ROWS;
-  const numTipos = tipos1[0].TABLE_ROWS;
-  const numCervezas = cervezas[0].TABLE_ROWS;
-  const numGraduaciones = graduaciones[0].TABLE_ROWS;
+
 
   return (
     <>

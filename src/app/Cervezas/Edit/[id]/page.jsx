@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   fetchTipos,
   fetchPaises,
@@ -36,14 +37,12 @@ const Edit = ({ params }) => {
     marca: "",
     stock: 0,
     unidades: 0,
-    formato:""
+    formato: "",
   });
 
   if (session.status == "loading") {
     return <p>Cargando</p>;
   }
-
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,12 +95,12 @@ const Edit = ({ params }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     setLoading(true);
     setErrors(null);
     setOK("");
     const token = session?.authorization.token || "";
-    
+
     const apiUrl =
       process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000/api/v1/";
 
@@ -118,7 +117,7 @@ const Edit = ({ params }) => {
       // Manejar la respuesta
       if (response.ok) {
         const data = await response.json();
-        
+
         setOK("Producto " + data.nombre + " guardado correctamente.");
       } else {
         const errores = await response.json();
@@ -325,7 +324,6 @@ const Edit = ({ params }) => {
             ></input>
           </div>
 
-
           <div className="flex p-2 items-center">
             <input
               type="checkbox"
@@ -352,10 +350,14 @@ const Edit = ({ params }) => {
           <div className="col-span-1 md:col-span-3 mt-2">
             {errors && <DisplayErrors errors={errors} />}
             {ok && <p className="bg-green-300 rounded p-4">{ok}</p>}
-            <button type="submit" className="btn-primary mt-2">
-              Guardar
-            </button>
-           
+            <div className="flex items-center mt-2">
+              <button type="submit" className="btn-primary ">
+                Guardar
+              </button>
+              <Link href="/Cervezas" className="btn-primary ">
+                Volver
+              </Link>
+            </div>
           </div>
         </form>
       </div>

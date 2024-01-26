@@ -1,4 +1,6 @@
+import { redirect } from "next/navigation";
 import { fetchCervezasById } from "@/services/api";
+import Link from "next/link";
 
 export default async function Detalle({ params }: { params: { id: string } }) {
   const id = params.id;
@@ -16,22 +18,22 @@ export default async function Detalle({ params }: { params: { id: string } }) {
           <div className="bg-gray-200 p-4 mb-2">
             <div className="grid grid-cols-2 gap-4">
               <div>
-              {cerveza?.novedad != 0 && (
-                <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
-                  <label className="font-bold p-2 italic text-white">
-                    Novedad
-                  </label>
-                </div>
-              )}
+                {cerveza?.novedad != 0 && (
+                  <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
+                    <label className="font-bold p-2 italic text-white">
+                      Novedad
+                    </label>
+                  </div>
+                )}
               </div>
               <div>
-              {cerveza?.oferta != 0 && (
-                <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
-                  <label className="font-bold p-2 italic text-white text-center">
-                    Oferta
-                  </label>
-                </div>
-              )}
+                {cerveza?.oferta != 0 && (
+                  <div className="font-bold mt-2 border-2 rounded-lg border-white  bg-gray-400">
+                    <label className="font-bold p-2 italic text-white text-center">
+                      Oferta
+                    </label>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -75,8 +77,12 @@ export default async function Detalle({ params }: { params: { id: string } }) {
                   Graduación: {cerveza?.graduacion}
                 </label>
               </div>
+              <Link href="/Cervezas" className="btn-primary">
+            Volver
+          </Link>
             </div>
           </div>
+         
         </div>
       </article>
     </>
